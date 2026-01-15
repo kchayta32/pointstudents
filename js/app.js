@@ -141,22 +141,35 @@ document.getElementById('cancelScore').addEventListener('click', () => {
 // Firebase Operations
 // ============================================
 async function initializeData() {
-    const coursesRef = ref(database, 'courses/CPE5010');
-    const snapshot = await get(coursesRef);
+    try {
+        console.log('Initializing Firebase data...');
+        const coursesRef = ref(database, 'courses/CPE5010');
+        const snapshot = await get(coursesRef);
 
-    if (!snapshot.exists()) {
-        // Initialize course data
-        await set(coursesRef, {
-            name: "การออกแบบและพัฒนาเกม",
-            code: "CPE5010 (001) 47/4734",
-            groups: initialGroups,
-            assignments: {}
-        });
-        console.log('Initialized course data');
+        if (!snapshot.exists()) {
+            // Initialize course data
+            console.log('No existing data, initializing...');
+            await set(coursesRef, {
+                name: "การออกแบบและพัฒนาเกม",
+                code: "CPE5010 (001) 47/4734",
+                groups: initialGroups,
+                assignments: {}
+            });
+            console.log('Initialized course data');
+        } else {
+            console.log('Data exists, loading...');
+        }
+
+        // Listen for data changes
+        listenToData();
+    } catch (error) {
+        console.error('Firebase initialization error:', error);
+        showNotification('ไม่สามารถเชื่อมต่อ Firebase ได้', 'error');
+
+        // Use local data as fallback
+        groups = initialGroups;
+        renderGroups();
     }
-
-    // Listen for data changes
-    listenToData();
 }
 
 function listenToData() {
@@ -164,6 +177,7 @@ function listenToData() {
     const groupsRef = ref(database, 'courses/CPE5010/groups');
     onValue(groupsRef, (snapshot) => {
         groups = snapshot.val() || initialGroups;
+        console.log('Groups loaded:', Object.keys(groups).length);
         renderGroups();
         updateLeaderboard();
     });
@@ -172,7 +186,9 @@ function listenToData() {
     const assignmentsRef = ref(database, 'courses/CPE5010/assignments');
     onValue(assignmentsRef, (snapshot) => {
         assignments = snapshot.val() || {};
+        console.log('Assignments loaded:', Object.keys(assignments).length);
         renderAssignments();
+        renderGroups(); // Re-render groups with updated assignments
         updateLeaderboard();
     });
 }
