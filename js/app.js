@@ -253,6 +253,8 @@ scoreForm.addEventListener('submit', async (e) => {
         scoreModal.classList.remove('active');
         scoreForm.reset();
         document.getElementById('scoreSingleEntry').style.display = 'none';
+        document.getElementById('assignmentFilter').value = '';
+        currentGroupForScore = null;
 
         showNotification('บันทึกคะแนนสำเร็จ!', 'success');
     } catch (error) {
@@ -646,10 +648,16 @@ document.getElementById('assignmentFilter').addEventListener('change', (e) => {
         document.getElementById('submissionLink').value = submission.link || '';
         document.getElementById('submissionStatus').value = submission.status || 'submitted';
 
-        // Format datetime for input
+        // Format datetime for input (local timezone)
         if (submission.submittedAt) {
             const date = new Date(submission.submittedAt);
-            const localDateTime = date.toISOString().slice(0, 16);
+            // Convert to local datetime string for input
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const localDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
             document.getElementById('submissionDateTime').value = localDateTime;
         }
     } else {
@@ -783,12 +791,23 @@ function formatDateTime(dateString) {
 function showNotification(message, type = 'info') {
     // Create notification element
     const notification = document.createElement('div');
+
+    // Determine background color based on type
+    let bgColor;
+    if (type === 'success') {
+        bgColor = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+    } else if (type === 'error') {
+        bgColor = 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)';
+    } else {
+        bgColor = 'linear-gradient(135deg, #3b82f6 0%, #7c3aed 100%)';
+    }
+
     notification.style.cssText = `
         position: fixed;
         bottom: 20px;
         right: 20px;
         padding: 16px 24px;
-        background: ${type === 'success' ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)' : 'linear-gradient(135deg, #3b82f6 0%, #7c3aed 100%)'};
+        background: ${bgColor};
         color: white;
         border-radius: 12px;
         font-family: 'Kanit', sans-serif;
