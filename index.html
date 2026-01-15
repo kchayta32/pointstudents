@@ -14,6 +14,39 @@
 </head>
 
 <body>
+    <!-- Role Selection Modal -->
+    <div class="modal role-modal active" id="roleModal">
+        <div class="modal-content modal-role">
+            <div class="modal-header">
+                <h3>🔐 เลือกโหมดการใช้งาน</h3>
+            </div>
+            <div class="modal-body">
+                <div class="role-options">
+                    <button class="role-btn view-btn" id="viewOnlyBtn">
+                        <span class="role-icon">👀</span>
+                        <span class="role-title">ดูอย่างเดียว</span>
+                        <span class="role-desc">สำหรับนักศึกษาดูคะแนน</span>
+                    </button>
+                    <button class="role-btn admin-btn" id="adminBtn">
+                        <span class="role-icon">👨‍💼</span>
+                        <span class="role-title">แอดมิน</span>
+                        <span class="role-desc">สำหรับอาจารย์จัดการคะแนน</span>
+                    </button>
+                </div>
+                <div class="password-section" id="passwordSection" style="display: none;">
+                    <div class="form-group">
+                        <label for="adminPassword">กรุณาใส่รหัสผ่าน</label>
+                        <input type="password" id="adminPassword" placeholder="รหัสผ่าน..." autocomplete="off">
+                        <div class="password-error" id="passwordError" style="display: none;">รหัสผ่านไม่ถูกต้อง</div>
+                    </div>
+                    <div class="password-actions">
+                        <button type="button" class="btn-cancel" id="backToRoles">ย้อนกลับ</button>
+                        <button type="button" class="btn-submit" id="confirmPassword">ยืนยัน</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Animated Background -->
     <div class="bg-animation">
         <div class="stars"></div>
@@ -61,7 +94,7 @@
             <section class="assignment-section">
                 <div class="section-header">
                     <h2><span class="icon">📋</span> จัดการงาน</h2>
-                    <button class="btn-add" id="addAssignmentBtn">
+                    <button class="btn-add admin-only" id="addAssignmentBtn">
                         <span>+</span> เพิ่มงาน
                     </button>
                 </div>

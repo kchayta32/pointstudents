@@ -54,6 +54,87 @@ const savedTheme = localStorage.getItem('theme') || 'light';
 document.body.dataset.theme = savedTheme;
 
 // ============================================
+// Role Selection System
+// ============================================
+const ADMIN_PASSWORD = '1212312121';
+let isAdminMode = false;
+
+const roleModal = document.getElementById('roleModal');
+const viewOnlyBtn = document.getElementById('viewOnlyBtn');
+const adminBtn = document.getElementById('adminBtn');
+const passwordSection = document.getElementById('passwordSection');
+const roleOptions = document.querySelector('.role-options');
+const adminPassword = document.getElementById('adminPassword');
+const passwordError = document.getElementById('passwordError');
+const backToRoles = document.getElementById('backToRoles');
+const confirmPassword = document.getElementById('confirmPassword');
+
+// View Only Mode
+viewOnlyBtn.addEventListener('click', () => {
+    setRole('view');
+    roleModal.classList.remove('active');
+});
+
+// Admin Mode - Show Password Input
+adminBtn.addEventListener('click', () => {
+    roleOptions.style.display = 'none';
+    passwordSection.style.display = 'block';
+    adminPassword.focus();
+});
+
+// Back to Role Selection
+backToRoles.addEventListener('click', () => {
+    passwordSection.style.display = 'none';
+    roleOptions.style.display = 'flex';
+    adminPassword.value = '';
+    passwordError.style.display = 'none';
+});
+
+// Confirm Password
+confirmPassword.addEventListener('click', () => {
+    verifyPassword();
+});
+
+// Enter key for password
+adminPassword.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        verifyPassword();
+    }
+});
+
+function verifyPassword() {
+    if (adminPassword.value === ADMIN_PASSWORD) {
+        setRole('admin');
+        roleModal.classList.remove('active');
+        adminPassword.value = '';
+        passwordError.style.display = 'none';
+    } else {
+        passwordError.style.display = 'block';
+        adminPassword.value = '';
+        adminPassword.focus();
+    }
+}
+
+function setRole(role) {
+    document.body.dataset.role = role;
+    isAdminMode = role === 'admin';
+
+    // Add role indicator to header
+    const headerInfo = document.querySelector('.header-info');
+    const existingIndicator = headerInfo.querySelector('.role-indicator');
+    if (existingIndicator) existingIndicator.remove();
+
+    const indicator = document.createElement('span');
+    indicator.className = `role-indicator ${role}`;
+    indicator.innerHTML = role === 'admin'
+        ? '👨‍💼 แอดมิน'
+        : '👀 ดูอย่างเดียว';
+    headerInfo.insertBefore(indicator, headerInfo.firstChild);
+
+    console.log('Role set to:', role);
+}
+
+// ============================================
 // View Toggle
 // ============================================
 viewBtns.forEach(btn => {
@@ -79,6 +160,12 @@ const tabContents = document.querySelectorAll('.tab-content');
 tabBtns.forEach(btn => {
     btn.addEventListener('click', () => {
         const targetTab = btn.dataset.tab;
+
+        // Block leaderboard access for view mode
+        if (targetTab === 'leaderboard' && !isAdminMode) {
+            showNotification('ต้องเข้าสู่ระบบแอดมินเพื่อดูลีดเดอร์บอร์ด', 'error');
+            return;
+        }
 
         // Update buttons
         tabBtns.forEach(b => b.classList.remove('active'));
@@ -323,7 +410,11 @@ function renderGroups() {
 function createGroupCard(group) {
     const card = document.createElement('div');
     card.className = 'group-card';
-    card.onclick = () => openScoreModal(group.id);
+    card.onclick = () => {
+        if (isAdminMode) {
+            openScoreModal(group.id);
+        }
+    };
 
     const totalScore = group.totalScore;
     const grade = getGrade(totalScore);

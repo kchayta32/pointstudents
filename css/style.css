@@ -1690,3 +1690,149 @@ section {
         padding: var(--spacing-md);
     }
 }
+
+/* Role Selection Modal */
+.role-modal {
+    z-index: 3000;
+}
+
+.modal-role {
+    max-width: 500px;
+    text-align: center;
+}
+
+.role-options {
+    display: flex;
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+}
+
+.role-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-xl);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-lg);
+    background: var(--bg-card);
+    cursor: pointer;
+    transition: var(--transition-normal);
+}
+
+.role-btn:hover {
+    transform: translateY(-5px);
+}
+
+.role-btn.view-btn:hover {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+}
+
+.role-btn.admin-btn:hover {
+    border-color: var(--primary-pink);
+    box-shadow: 0 0 30px rgba(236, 72, 153, 0.3);
+}
+
+.role-icon {
+    font-size: 3rem;
+}
+
+.role-title {
+    font-family: 'Kanit', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.role-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.password-section {
+    padding: var(--spacing-lg);
+    background: var(--bg-card);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.password-error {
+    color: #ef4444;
+    font-size: 0.85rem;
+    margin-top: var(--spacing-sm);
+}
+
+.password-actions {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: center;
+    margin-top: var(--spacing-lg);
+}
+
+/* View Only Mode */
+body[data-role="view"] .admin-only {
+    display: none !important;
+}
+
+body[data-role="view"] .assignment-actions {
+    display: none !important;
+}
+
+body[data-role="view"] .group-card {
+    cursor: default;
+}
+
+body[data-role="view"] .group-card:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+body[data-role="view"] .tab-btn[data-tab="leaderboard"]::after {
+    content: '🔒';
+    margin-left: var(--spacing-xs);
+    font-size: 0.8rem;
+}
+
+body[data-role="view"] .tab-btn[data-tab="leaderboard"] {
+    opacity: 0.6;
+}
+
+/* Role indicator in header */
+.role-indicator {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-xs) var(--spacing-md);
+    border-radius: var(--radius-full);
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.role-indicator.admin {
+    background: rgba(236, 72, 153, 0.2);
+    color: var(--primary-pink-light);
+}
+
+.role-indicator.view {
+    background: rgba(59, 130, 246, 0.2);
+    color: var(--primary-blue-light);
+}
+
+/* Light theme role modal */
+[data-theme="light"] .role-btn {
+    background: #ffffff;
+    border-color: rgba(30, 58, 138, 0.15);
+}
+
+[data-theme="light"] .password-section {
+    background: #f8fafc;
+    border-color: rgba(30, 58, 138, 0.15);
+}
+
+@media (max-width: 600px) {
+    .role-options {
+        flex-direction: column;
+    }
+}
