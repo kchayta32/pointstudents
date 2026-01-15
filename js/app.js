@@ -664,6 +664,9 @@ document.getElementById('assignmentFilter').addEventListener('change', (e) => {
         document.getElementById('submissionLink').value = submission.link || '';
         document.getElementById('submissionStatus').value = submission.status || 'submitted';
 
+        // Show reset button when there's existing data
+        document.getElementById('resetSubmission').style.display = 'block';
+
         // Format datetime for input (local timezone)
         if (submission.submittedAt) {
             const date = new Date(submission.submittedAt);
@@ -677,6 +680,9 @@ document.getElementById('assignmentFilter').addEventListener('change', (e) => {
             document.getElementById('submissionDateTime').value = localDateTime;
         }
     } else {
+        // Hide reset button for new submissions
+        document.getElementById('resetSubmission').style.display = 'none';
+
         // Set default datetime to now
         const now = new Date();
         const localDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
@@ -684,6 +690,48 @@ document.getElementById('assignmentFilter').addEventListener('change', (e) => {
         document.getElementById('scoreValue').value = '';
         document.getElementById('submissionLink').value = '';
         document.getElementById('submissionStatus').value = 'submitted';
+    }
+});
+
+// Reset submission handler
+document.getElementById('resetSubmission').addEventListener('click', async () => {
+    const groupId = document.getElementById('currentGroupId').value;
+    const assignmentId = document.getElementById('assignmentFilter').value;
+
+    if (!assignmentId || !groupId) {
+        showNotification('กรุณาเลือกงานก่อน', 'error');
+        return;
+    }
+
+    const assignmentName = assignments[assignmentId]?.name || 'งาน';
+
+    if (!confirm(`ยืนยันการรีเซ็ตข้อมูลการส่ง "${assignmentName}" ของกลุ่ม ${groupId}?`)) {
+        return;
+    }
+
+    try {
+        // Remove submission from Firebase
+        const submissionRef = ref(database, `courses/CPE5010/groups/${groupId}/submissions/${assignmentId}`);
+        await remove(submissionRef);
+
+        // Reset form
+        document.getElementById('scoreValue').value = '';
+        document.getElementById('submissionLink').value = '';
+        document.getElementById('submissionDateTime').value = '';
+        document.getElementById('submissionStatus').value = 'submitted';
+        document.getElementById('resetSubmission').style.display = 'none';
+
+        showNotification('รีเซ็ตข้อมูลสำเร็จ!', 'success');
+
+        // Close modal
+        scoreModal.classList.remove('active');
+        scoreForm.reset();
+        document.getElementById('scoreSingleEntry').style.display = 'none';
+        document.getElementById('assignmentFilter').value = '';
+        currentGroupForScore = null;
+    } catch (error) {
+        console.error('Error resetting submission:', error);
+        showNotification('เกิดข้อผิดพลาด: ' + error.message, 'error');
     }
 });
 
