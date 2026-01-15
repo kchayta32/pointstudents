@@ -111,11 +111,15 @@ addAssignmentBtn.addEventListener('click', () => {
 document.getElementById('closeAssignmentModal').addEventListener('click', () => {
     assignmentModal.classList.remove('active');
     assignmentForm.reset();
+    delete assignmentForm.dataset.editId;
+    document.querySelector('#assignmentForm .btn-submit').textContent = '💾 บันทึก';
 });
 
 document.getElementById('cancelAssignment').addEventListener('click', () => {
     assignmentModal.classList.remove('active');
     assignmentForm.reset();
+    delete assignmentForm.dataset.editId;
+    document.querySelector('#assignmentForm .btn-submit').textContent = '💾 บันทึก';
 });
 
 document.getElementById('closeScoreModal').addEventListener('click', () => {
@@ -203,25 +207,40 @@ assignmentForm.addEventListener('submit', async (e) => {
         const name = document.getElementById('assignmentName').value;
         const maxScore = parseInt(document.getElementById('maxScore').value);
         const dueDate = document.getElementById('dueDate').value;
+        const editId = assignmentForm.dataset.editId;
 
-        console.log('Saving assignment:', { name, maxScore, dueDate });
+        console.log('Saving assignment:', { name, maxScore, dueDate, editId });
 
-        const assignmentsRef = ref(database, 'courses/CPE5010/assignments');
-        const newAssignmentRef = push(assignmentsRef);
+        if (editId) {
+            // Update existing assignment
+            const assignmentRef = ref(database, `courses/CPE5010/assignments/${editId}`);
+            await update(assignmentRef, {
+                name,
+                maxScore,
+                dueDate: dueDate || null,
+                updatedAt: new Date().toISOString()
+            });
+            showNotification('อัพเดทงานสำเร็จ!', 'success');
+        } else {
+            // Create new assignment
+            const assignmentsRef = ref(database, 'courses/CPE5010/assignments');
+            const newAssignmentRef = push(assignmentsRef);
 
-        await set(newAssignmentRef, {
-            name,
-            maxScore,
-            dueDate: dueDate || null,
-            createdAt: new Date().toISOString()
-        });
+            await set(newAssignmentRef, {
+                name,
+                maxScore,
+                dueDate: dueDate || null,
+                createdAt: new Date().toISOString()
+            });
+            showNotification('เพิ่มงานใหม่สำเร็จ!', 'success');
+        }
 
         console.log('Assignment saved successfully!');
 
         assignmentModal.classList.remove('active');
         assignmentForm.reset();
-
-        showNotification('เพิ่มงานใหม่สำเร็จ!', 'success');
+        delete assignmentForm.dataset.editId;
+        document.querySelector('#assignmentForm .btn-submit').textContent = '💾 บันทึก';
     } catch (error) {
         console.error('Error saving assignment:', error);
         showNotification('เกิดข้อผิดพลาด: ' + error.message, 'error');
@@ -410,6 +429,10 @@ function renderAssignments() {
         card.className = 'assignment-card';
 
         card.innerHTML = `
+            <div class="assignment-actions">
+                <button class="action-btn edit-btn" data-id="${id}" title="แก้ไข">✏️</button>
+                <button class="action-btn delete-btn" data-id="${id}" title="ลบ">🗑️</button>
+            </div>
             <div class="assignment-header">
                 <div class="assignment-title">${assignment.name}</div>
                 <div class="assignment-max-score">${assignment.maxScore} คะแนน</div>
@@ -435,8 +458,65 @@ function renderAssignments() {
             </div>
         `;
 
+        // Add event listeners
+        card.querySelector('.edit-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            openEditAssignmentModal(id);
+        });
+
+        card.querySelector('.delete-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            deleteAssignment(id);
+        });
+
         assignmentsGrid.appendChild(card);
     });
+}
+
+// Edit Assignment Modal
+function openEditAssignmentModal(assignmentId) {
+    const assignment = assignments[assignmentId];
+    if (!assignment) return;
+
+    // Populate form with existing data
+    document.getElementById('assignmentName').value = assignment.name;
+    document.getElementById('maxScore').value = assignment.maxScore;
+    document.getElementById('dueDate').value = assignment.dueDate || '';
+
+    // Store the assignment ID for update
+    assignmentForm.dataset.editId = assignmentId;
+
+    // Change button text
+    document.querySelector('#assignmentForm .btn-submit').textContent = '💾 อัพเดท';
+
+    assignmentModal.classList.add('active');
+}
+
+// Delete Assignment
+async function deleteAssignment(assignmentId) {
+    const assignment = assignments[assignmentId];
+    if (!assignment) return;
+
+    if (!confirm(`ยืนยันการลบงาน "${assignment.name}"?\nการลบจะรวมถึงข้อมูลคะแนนที่นักศึกษาส่งมาแล้วด้วย`)) {
+        return;
+    }
+
+    try {
+        // Delete assignment from Firebase
+        const assignmentRef = ref(database, `courses/CPE5010/assignments/${assignmentId}`);
+        await remove(assignmentRef);
+
+        // Delete all submissions for this assignment from all groups
+        for (const groupId of Object.keys(groups)) {
+            const submissionRef = ref(database, `courses/CPE5010/groups/${groupId}/submissions/${assignmentId}`);
+            await remove(submissionRef);
+        }
+
+        showNotification('ลบงานสำเร็จ!', 'success');
+    } catch (error) {
+        console.error('Error deleting assignment:', error);
+        showNotification('เกิดข้อผิดพลาด: ' + error.message, 'error');
+    }
 }
 
 // ============================================

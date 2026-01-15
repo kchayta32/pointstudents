@@ -810,6 +810,66 @@ section {
     border-color: rgba(124, 58, 237, 0.3);
 }
 
+.assignment-card:hover .assignment-actions {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Assignment Card Actions */
+.assignment-actions {
+    position: absolute;
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
+    display: flex;
+    gap: var(--spacing-xs);
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: var(--transition-fast);
+    z-index: 10;
+}
+
+.action-btn {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    transition: var(--transition-fast);
+    backdrop-filter: blur(10px);
+}
+
+.action-btn.edit-btn {
+    background: rgba(59, 130, 246, 0.9);
+    color: white;
+}
+
+.action-btn.edit-btn:hover {
+    background: rgba(59, 130, 246, 1);
+    transform: scale(1.1);
+}
+
+.action-btn.delete-btn {
+    background: rgba(239, 68, 68, 0.9);
+    color: white;
+}
+
+.action-btn.delete-btn:hover {
+    background: rgba(239, 68, 68, 1);
+    transform: scale(1.1);
+}
+
+[data-theme="light"] .action-btn.edit-btn {
+    background: rgba(59, 130, 246, 0.95);
+}
+
+[data-theme="light"] .action-btn.delete-btn {
+    background: rgba(239, 68, 68, 0.95);
+}
+
 .assignment-header {
     display: flex;
     justify-content: space-between;
