@@ -1267,6 +1267,51 @@ section {
     text-align: center;
 }
 
+/* Score Input Wrapper */
+.score-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.score-input-wrapper input {
+    flex: 1;
+    max-width: 120px;
+    padding: var(--spacing-md);
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.max-score-display {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.score-single-entry {
+    padding: var(--spacing-lg);
+    background: var(--bg-card);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: var(--spacing-lg);
+}
+
+[data-theme="light"] .score-input-wrapper input {
+    background: #f8fafc;
+    border-color: rgba(30, 58, 138, 0.2);
+}
+
+[data-theme="light"] .score-single-entry {
+    background: #f8fafc;
+    border-color: rgba(30, 58, 138, 0.15);
+}
+
 /* Empty State */
 .empty-state {
     text-align: center;

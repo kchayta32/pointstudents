@@ -218,33 +218,47 @@ assignmentForm.addEventListener('submit', async (e) => {
 scoreForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const groupId = document.getElementById('currentGroupId').value;
-    const link = document.getElementById('submissionLink').value;
-    const status = document.getElementById('submissionStatus').value;
+    try {
+        const groupId = document.getElementById('currentGroupId').value;
+        const assignmentId = document.getElementById('assignmentFilter').value;
 
-    // Collect all scores
-    const scoreInputs = document.querySelectorAll('.score-input');
-    const submissions = {};
+        if (!assignmentId) {
+            showNotification('กรุณาเลือกงานที่จะบันทึก', 'error');
+            return;
+        }
 
-    scoreInputs.forEach(input => {
-        const assignmentId = input.dataset.assignmentId;
-        const score = parseFloat(input.value) || 0;
-        submissions[assignmentId] = {
+        const score = parseFloat(document.getElementById('scoreValue').value) || 0;
+        const link = document.getElementById('submissionLink').value;
+        const status = document.getElementById('submissionStatus').value;
+        const submissionDateTime = document.getElementById('submissionDateTime').value;
+
+        // Convert local datetime to ISO string
+        const submittedAt = submissionDateTime
+            ? new Date(submissionDateTime).toISOString()
+            : new Date().toISOString();
+
+        console.log('Saving score:', { groupId, assignmentId, score, status, submittedAt });
+
+        // Update single assignment in Firebase
+        const submissionRef = ref(database, `courses/CPE5010/groups/${groupId}/submissions/${assignmentId}`);
+        await set(submissionRef, {
             score,
             status,
             link: link || null,
-            submittedAt: new Date().toISOString()
-        };
-    });
+            submittedAt
+        });
 
-    // Update in Firebase
-    const submissionsRef = ref(database, `courses/CPE5010/groups/${groupId}/submissions`);
-    await update(submissionsRef, submissions);
+        console.log('Score saved successfully!');
 
-    scoreModal.classList.remove('active');
-    scoreForm.reset();
+        scoreModal.classList.remove('active');
+        scoreForm.reset();
+        document.getElementById('scoreSingleEntry').style.display = 'none';
 
-    showNotification('บันทึกคะแนนสำเร็จ!', 'success');
+        showNotification('บันทึกคะแนนสำเร็จ!', 'success');
+    } catch (error) {
+        console.error('Error saving score:', error);
+        showNotification('เกิดข้อผิดพลาด: ' + error.message, 'error');
+    }
 });
 
 // ============================================
@@ -535,9 +549,13 @@ function updateChart(rankings) {
 // ============================================
 // Score Modal
 // ============================================
+let currentGroupForScore = null;
+
 function openScoreModal(groupId) {
     const group = groups[groupId];
     if (!group) return;
+
+    currentGroupForScore = group;
 
     document.getElementById('modalGroupName').textContent = `กลุ่ม ${groupId}`;
     document.getElementById('currentGroupId').value = groupId;
@@ -548,42 +566,76 @@ function openScoreModal(groupId) {
         `<span class="member-tag">${m}</span>`
     ).join('');
 
-    // Create score entries for each assignment
-    const scoreEntries = document.getElementById('scoreEntries');
+    // Populate assignment filter dropdown
+    const assignmentFilter = document.getElementById('assignmentFilter');
+    const scoreSingleEntry = document.getElementById('scoreSingleEntry');
+
+    // Reset
+    scoreSingleEntry.style.display = 'none';
+    document.getElementById('scoreValue').value = '';
+    document.getElementById('submissionLink').value = '';
+    document.getElementById('submissionDateTime').value = '';
+    document.getElementById('submissionStatus').value = 'submitted';
 
     if (Object.keys(assignments).length === 0) {
-        scoreEntries.innerHTML = '<div class="no-data">ยังไม่มีงาน กรุณาเพิ่มงานก่อน</div>';
+        assignmentFilter.innerHTML = '<option value="">ยังไม่มีงาน กรุณาเพิ่มงานก่อน</option>';
+        assignmentFilter.disabled = true;
     } else {
-        scoreEntries.innerHTML = Object.entries(assignments).map(([id, assignment]) => {
-            const currentScore = group.submissions?.[id]?.score ?? '';
-            return `
-                <div class="score-entry">
-                    <div>
-                        <div class="score-entry-name">${assignment.name}</div>
-                        <div class="score-entry-max">คะแนนเต็ม: ${assignment.maxScore}</div>
-                    </div>
-                    <input type="number" 
-                           class="score-input" 
-                           data-assignment-id="${id}"
-                           min="0" 
-                           max="${assignment.maxScore}" 
-                           step="0.5"
-                           value="${currentScore}"
-                           placeholder="0">
-                </div>
-            `;
-        }).join('');
-    }
-
-    // Set current link and status
-    const lastSubmission = Object.values(group.submissions || {})[0];
-    if (lastSubmission) {
-        document.getElementById('submissionLink').value = lastSubmission.link || '';
-        document.getElementById('submissionStatus').value = lastSubmission.status || 'not_submitted';
+        assignmentFilter.disabled = false;
+        assignmentFilter.innerHTML = '<option value="">-- เลือกงาน --</option>' +
+            Object.entries(assignments).map(([id, assignment]) => {
+                const submission = group.submissions?.[id];
+                const hasScore = submission?.score !== undefined;
+                const statusIcon = hasScore ? '✓' : '';
+                return `<option value="${id}">${assignment.name} ${statusIcon}</option>`;
+            }).join('');
     }
 
     scoreModal.classList.add('active');
 }
+
+// Assignment filter change handler
+document.getElementById('assignmentFilter').addEventListener('change', (e) => {
+    const assignmentId = e.target.value;
+    const scoreSingleEntry = document.getElementById('scoreSingleEntry');
+
+    if (!assignmentId || !currentGroupForScore) {
+        scoreSingleEntry.style.display = 'none';
+        return;
+    }
+
+    const assignment = assignments[assignmentId];
+    const submission = currentGroupForScore.submissions?.[assignmentId];
+
+    // Show the score entry section
+    scoreSingleEntry.style.display = 'block';
+
+    // Update max score display
+    document.getElementById('maxScoreDisplay').textContent = `/ ${assignment.maxScore}`;
+    document.getElementById('scoreValue').max = assignment.maxScore;
+
+    // Fill in existing data if available
+    if (submission) {
+        document.getElementById('scoreValue').value = submission.score ?? '';
+        document.getElementById('submissionLink').value = submission.link || '';
+        document.getElementById('submissionStatus').value = submission.status || 'submitted';
+
+        // Format datetime for input
+        if (submission.submittedAt) {
+            const date = new Date(submission.submittedAt);
+            const localDateTime = date.toISOString().slice(0, 16);
+            document.getElementById('submissionDateTime').value = localDateTime;
+        }
+    } else {
+        // Set default datetime to now
+        const now = new Date();
+        const localDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+        document.getElementById('submissionDateTime').value = localDateTime;
+        document.getElementById('scoreValue').value = '';
+        document.getElementById('submissionLink').value = '';
+        document.getElementById('submissionStatus').value = 'submitted';
+    }
+});
 
 // ============================================
 // Utility Functions
