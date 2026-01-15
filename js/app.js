@@ -290,7 +290,7 @@ function createGroupCard(group) {
 
     const totalScore = group.totalScore;
     const grade = getGrade(totalScore);
-    const lastStatus = getLastSubmissionStatus(group);
+    const completionStatus = getCompletionStatus(group);
 
     card.innerHTML = `
         <div class="group-header">
@@ -307,8 +307,8 @@ function createGroupCard(group) {
             ${group.members.map(m => `<span class="member-tag">${m}</span>`).join('')}
         </div>
         <div class="group-status">
-            <span class="status-dot ${lastStatus}"></span>
-            <span>${getStatusText(lastStatus)}</span>
+            <span class="status-dot ${completionStatus.isComplete ? 'submitted' : 'not_submitted'}"></span>
+            <span>${completionStatus.isComplete ? 'ส่งครบแล้ว' : `ยังไม่ครบ (${completionStatus.submitted}/${completionStatus.total})`}</span>
         </div>
         ${renderGroupAssignments(group)}
     `;
@@ -329,11 +329,17 @@ function renderGroupAssignments(group) {
         const maxScore = assignment.maxScore;
         const scoreClass = getScoreClass(score, maxScore);
         const submittedAt = submission?.submittedAt ? formatDateTime(submission.submittedAt) : '';
+        const status = submission?.status || 'not_submitted';
+        const statusText = getStatusText(status);
+        const hasSubmission = submission?.score !== undefined;
 
         html += `
             <div class="assignment-row">
-                <div>
-                    <span class="assignment-name">${assignment.name}</span>
+                <div class="assignment-info">
+                    <div class="assignment-name-row">
+                        <span class="assignment-name">${assignment.name}</span>
+                        <span class="assignment-status-badge ${status}">${hasSubmission ? statusText : 'ยังไม่ส่ง'}</span>
+                    </div>
                     ${submittedAt ? `<div class="submission-time"><span class="time-icon">🕐</span> ${submittedAt}</div>` : ''}
                 </div>
                 <span class="assignment-score ${scoreClass}">${score}/${maxScore}</span>
@@ -343,6 +349,26 @@ function renderGroupAssignments(group) {
 
     html += '</div>';
     return html;
+}
+
+// Get completion status helper
+function getCompletionStatus(group) {
+    const totalAssignments = Object.keys(assignments).length;
+    if (totalAssignments === 0) return { isComplete: false, submitted: 0, total: 0 };
+
+    let submitted = 0;
+    Object.keys(assignments).forEach(assignmentId => {
+        const submission = group.submissions?.[assignmentId];
+        if (submission?.score !== undefined) {
+            submitted++;
+        }
+    });
+
+    return {
+        isComplete: submitted === totalAssignments,
+        submitted,
+        total: totalAssignments
+    };
 }
 
 function renderAssignments() {

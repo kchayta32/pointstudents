@@ -1026,8 +1026,48 @@ section {
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+.assignment-info {
+    flex: 1;
+}
+
+.assignment-name-row {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+}
+
 .assignment-name {
     color: var(--text-secondary);
+}
+
+.assignment-status-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: var(--radius-full);
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.assignment-status-badge.submitted {
+    background: rgba(16, 185, 129, 0.2);
+    color: var(--status-success);
+}
+
+.assignment-status-badge.late {
+    background: rgba(245, 158, 11, 0.2);
+    color: var(--status-warning);
+}
+
+.assignment-status-badge.not_submitted {
+    background: rgba(239, 68, 68, 0.2);
+    color: var(--status-danger);
+}
+
+.assignment-status-badge.resubmit {
+    background: rgba(59, 130, 246, 0.2);
+    color: var(--status-info);
 }
 
 .assignment-score {
