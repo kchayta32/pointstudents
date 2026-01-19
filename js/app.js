@@ -6,18 +6,123 @@ import { database, ref, set, get, push, onValue, update, remove } from './fireba
 // ============================================
 const initialGroups = {
     "1": { members: ["แนน", "นก", "เฟรช", "มา", "มี่", "ไอซ์"] },
-    "2": { members: ["ตัน", "โรบอท", "พี", "ปาร์ม", "ดล"] },
+    "2": { members: ["ต้น", "โรบอท", "พี", "ปาล์ม", "ดล"] },
     "3": { members: ["ต้า", "เขต", "เนย", "น้ำ", "หญิง", "โอ๊ค"] },
     "4": { members: ["ม่อน", "ปลื่ม", "บิ๊ก", "สตางค์"] },
     "5": { members: ["ซี", "กิด", "มอส"] },
-    "6": { members: ["เอฟขนอม", "เน๊ะบางบ่อ", "ทิมนคร", "เกมส์สุราษฎร์", "เพลงสุพรรณ"] },
+    "6": { members: ["เอฟขนอม", "เน๊ะบางบ่อ", "ทีมนคร", "เกมส์สุราษฎร์", "เพลงสุพรรณ"] },
     "7": { members: ["เจ๋งซอยมังกร", "ปั๊บโป๊เตโต้", "แฟ้มลาซาล", "บูมบางแค", "แคร์บางคน", "อลัม"] },
     "8": { members: ["เซน", "บอส", "ปอย", "ปาย", "โบ้"] },
     "9": { members: ["โอ๊ต", "เต้", "โฟน", "เขต", "อาท", "ฟลุ๊ค"] },
-    "10": { members: ["มิ้น", "กาญ", "เนย"] },
+    "10": { members: ["มิ้น", "กาญ", "สุนิสา"] },
     "11": { members: ["บอส", "โต้", "น้อยหน่า", "จู้", "กี้", "พี่อาม"] },
     "12": { members: ["กิจ", "โอม"] }
 };
+
+// ============================================
+// Member Data - Student ID & Full Name
+// ============================================
+const memberData = {
+    // กลุ่มที่ 1
+    "แนน": { studentId: "66122519085", fullName: "นางสาวมลตณรัตน์ วิวัฒน์เมทากร" },
+    "นก": { studentId: "66122519060", fullName: "นางสาวเกศินี แซสันเทียะ" },
+    "เฟรช": { studentId: "66122519059", fullName: "นางสาวอนันตญา จันทร์เจริญ" },
+    "มา": { studentId: "66122519083", fullName: "นางสาวอริษรา ชาญแท้" },
+    "มี่": { studentId: "66122519035", fullName: "นางสาวณภัทร แซ่ตั้ง" },
+    "ไอซ์": { studentId: "66122519092", fullName: "นางสาวชุติกาญจน์ เพิ่มศิลป์" },
+
+    // กลุ่มที่ 2
+    "ต้น": { studentId: "66122519032", fullName: "นายกิตติ ชัยตา" },
+    "โรบอท": { studentId: "66122519012", fullName: "นายศตวรรษ อินทรักษ์" },
+    "พี": { studentId: "66122519044", fullName: "นายภาณุวิชญ์ คงสุริยา" },
+    "ปาล์ม": { studentId: "66122519026", fullName: "นายธเนศพล แซ่เอีย" },
+    "ดล": { studentId: "66122519023", fullName: "นายกฤษนัย กิ้นโบราณ" },
+
+    // กลุ่มที่ 3
+    "ต้า": null,
+    "เขต": { studentId: "66122519076", fullName: "นายฐิติโชติ โสดาจันทร์" },
+    "เนย": null,
+    "น้ำ": { studentId: "66122519041", fullName: "นางสาวสุธิดา สารบรรณ" },
+    "หญิง": { studentId: "66122519021", fullName: "นางสาวอารียา สะอาดเอี่ยม" },
+    "โอ๊ค": null,
+
+    // กลุ่มที่ 4
+    "ม่อน": { studentId: "66122519069", fullName: "นายตรีเพชร รุ่งเรือง" },
+    "ปลื่ม": null,
+    "บิ๊ก": null,
+    "สตางค์": { studentId: "66122519080", fullName: "นางสาวเพชรพลอย วงศ์มณี" },
+
+    // กลุ่มที่ 5
+    "ซี": { studentId: "66122519054", fullName: "นายภาณุวัฒน์ อามาตย์" },
+    "กิด": { studentId: "66122519047", fullName: "นายศักดิ์นรินทร์ ศรีจันทร์" },
+    "มอส": { studentId: "66122519067", fullName: "นายอภิชัย ประมาณ" },
+
+    // กลุ่มที่ 6
+    "เอฟขนอม": { studentId: "66122519007", fullName: "นายพฤฒินันท์ เล่าสกุลสุข" },
+    "เน๊ะบางบ่อ": { studentId: "66122519039", fullName: "นายธีรศักดิ์ บุญเกิดรัมย์" },
+    "ทีมนคร": { studentId: "66122519028", fullName: "นายนลธวัช จิตต์รัว" },
+    "เกมส์สุราษฎร์": { studentId: "66122519008", fullName: "นายศุภณัฐ ชุมช้าง" },
+    "เพลงสุพรรณ": { studentId: "66122519036", fullName: "นายสรวีย์ ผลวงษ์" },
+
+    // กลุ่มที่ 7
+    "เจ๋งซอยมังกร": { studentId: "66122519045", fullName: "นายธนกร แสงสุระ" },
+    "ปั๊บโป๊เตโต้": null,
+    "แฟ้มลาซาล": { studentId: "66122519034", fullName: "นายกฤษณพงศ์ มนต์แก้ว" },
+    "บูมบางแค": null,
+    "แคร์บางคน": null,
+    "อลัม": { studentId: "66122519042", fullName: "นายมูฮัมมัดอาหลัม มามุ" },
+
+    // กลุ่มที่ 8
+    "เซน": { studentId: "66122519010", fullName: "นายอับดุลฮากิม เรืองประดิษฐ์" },
+    "บอส": null,
+    "ปอย": { studentId: "66122519091", fullName: "นางสาวทิฆัมพร มาให้ทรัพย์" },
+    "ปาย": null,
+    "โบ้": null,
+
+    // กลุ่มที่ 9
+    "โอ๊ต": { studentId: "66122519061", fullName: "นายจตุรเทพ รัตนวรเศวต" },
+    "เต้": null,
+    "โฟน": null,
+    "อาท": null,
+    "ฟลุ๊ค": null,
+
+    // กลุ่มที่ 10
+    "มิ้น": { studentId: "66122519084", fullName: "นางสาวธนภร วิรัชมงคลชัย" },
+    "กาญ": { studentId: "66122519075", fullName: "นางสาวกัญญาณัฐ ลุนชาติ" },
+
+    // กลุ่มที่ 11
+    "โต้": { studentId: "66122519029", fullName: "นายณัฐวุฒิ บุญปลื้ม" },
+    "น้อยหน่า": { studentId: "66122519009", fullName: "นางสาวศศิวิมล จันทร์เย็น" },
+    "จู้": { studentId: "66122519027", fullName: "นางสาวจิราภา มาทา" },
+    "กี้": { studentId: "66122519030", fullName: "นายนวพล อุรีภาศ" },
+    "พี่อาม": { studentId: "66122519025", fullName: "นางสาวธัญสุดา พันธ์นุช" },
+
+    // กลุ่มที่ 12
+    "กิจ": { studentId: "66122519003", fullName: "นายธนกฤต วรรณรังษี" },
+    "โอม": { studentId: "66122519024", fullName: "นายภานุวัฒน์ นิ่มนวล" }
+};
+
+// Special cases for duplicate names (need group context)
+const memberDataByGroup = {
+    "3": {
+        "เนย": null
+    },
+    "10": {
+        "สุนิสา": { studentId: "66122519089", fullName: "นางสาวสุนิสา โพธิดา" }
+    },
+    "11": {
+        "บอส": { studentId: "66122519031", fullName: "นายกฤศ เจริญทรัพย์" }
+    }
+};
+
+// Function to get member info with group context
+function getMemberInfo(nickname, groupId) {
+    // Check group-specific data first (for duplicates)
+    if (memberDataByGroup[groupId] && memberDataByGroup[groupId][nickname] !== undefined) {
+        return memberDataByGroup[groupId][nickname];
+    }
+    return memberData[nickname] || null;
+}
 
 // ============================================
 // State
@@ -248,7 +353,22 @@ async function initializeData() {
             });
             console.log('Initialized course data');
         } else {
-            console.log('Data exists, loading...');
+            console.log('Data exists, syncing members from initialGroups...');
+            // Sync members from initialGroups but keep submissions
+            const existingGroups = snapshot.val().groups || {};
+            const updatedGroups = {};
+
+            for (const [groupId, groupData] of Object.entries(initialGroups)) {
+                updatedGroups[groupId] = {
+                    members: groupData.members, // Use latest members from code
+                    submissions: existingGroups[groupId]?.submissions || {} // Keep existing submissions
+                };
+            }
+
+            // Update groups in Firebase
+            const groupsRef = ref(database, 'courses/CPE5010/groups');
+            await set(groupsRef, updatedGroups);
+            console.log('Synced members with Firebase');
         }
 
         // Listen for data changes
@@ -432,7 +552,11 @@ function createGroupCard(group) {
             </div>
         </div>
         <div class="group-members">
-            ${group.members.map(m => `<span class="member-tag">${m}</span>`).join('')}
+            ${group.members.map(m => {
+        const info = getMemberInfo(m, group.id);
+        const hasInfo = info !== null;
+        return `<span class="member-tag${hasInfo ? ' has-info' : ''}" data-nickname="${m}" data-group-id="${group.id}">${m}</span>`;
+    }).join('')}
         </div>
         <div class="group-status">
             <span class="status-dot ${completionStatus.isComplete ? 'submitted' : 'not_submitted'}"></span>
@@ -1071,6 +1195,134 @@ function showNotification(message, type = 'info') {
         setTimeout(() => notification.remove(), 300);
     }, 3000);
 }
+
+// ============================================
+// Member Hologram Popup System
+// ============================================
+let currentPopup = null;
+let popupTimeout = null;
+
+function createPopup(nickname, groupId) {
+    const info = getMemberInfo(nickname, groupId);
+    if (!info) return null;
+
+    const popup = document.createElement('div');
+    popup.className = 'member-popup';
+
+    // Create random particles
+    const particlesHtml = Array.from({ length: 6 }, (_, i) => {
+        const left = Math.random() * 100;
+        const top = Math.random() * 100;
+        const delay = Math.random() * 2;
+        return `<div class="hologram-particle" style="left: ${left}%; top: ${top}%; animation-delay: ${delay}s;"></div>`;
+    }).join('');
+
+    popup.innerHTML = `
+        <div class="popup-arrow top"></div>
+        <div class="hologram-card">
+            <div class="hologram-particles">${particlesHtml}</div>
+            <div class="popup-content">
+                <div class="popup-profile">
+                    <img class="profile-image" src="images/${nickname}.png" alt="${nickname}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="profile-fallback" style="display:none;">👤</div>
+                </div>
+                <div class="popup-info">
+                    <div class="popup-student-id">
+                        <div class="id-icon">🎓</div>
+                        <div class="id-text">${info.studentId}</div>
+                    </div>
+                    <div class="popup-fullname">
+                        <div class="name-text">${info.fullName}</div>
+                    </div>
+                    <div class="popup-nickname">ชื่อเล่น: ${nickname}</div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    return popup;
+}
+
+function showPopup(element) {
+    const nickname = element.dataset.nickname;
+    const groupId = element.dataset.groupId;
+
+    // Check if member has info
+    const info = getMemberInfo(nickname, groupId);
+    if (!info) return;
+
+    // Remove existing popup
+    hidePopup();
+
+    // Create new popup
+    currentPopup = createPopup(nickname, groupId);
+    if (!currentPopup) return;
+
+    document.body.appendChild(currentPopup);
+
+    // Calculate position
+    const rect = element.getBoundingClientRect();
+    const popupRect = currentPopup.getBoundingClientRect();
+
+    let left = rect.left + (rect.width / 2) - (popupRect.width / 2);
+    let top = rect.bottom + 15;
+
+    // Adjust if popup goes off screen
+    if (left < 10) left = 10;
+    if (left + popupRect.width > window.innerWidth - 10) {
+        left = window.innerWidth - popupRect.width - 10;
+    }
+
+    // If popup goes below viewport, show it above the element
+    if (top + popupRect.height > window.innerHeight - 10) {
+        top = rect.top - popupRect.height - 15;
+        currentPopup.querySelector('.popup-arrow').className = 'popup-arrow bottom';
+    }
+
+    currentPopup.style.left = `${left}px`;
+    currentPopup.style.top = `${top}px`;
+
+    // Trigger animation
+    requestAnimationFrame(() => {
+        currentPopup.classList.add('visible');
+    });
+}
+
+function hidePopup() {
+    if (currentPopup) {
+        currentPopup.classList.remove('visible');
+        setTimeout(() => {
+            if (currentPopup && currentPopup.parentNode) {
+                currentPopup.remove();
+            }
+            currentPopup = null;
+        }, 300);
+    }
+}
+
+// Event delegation for member tags
+document.addEventListener('mouseenter', (e) => {
+    if (e.target.classList.contains('member-tag') && e.target.classList.contains('has-info')) {
+        clearTimeout(popupTimeout);
+        popupTimeout = setTimeout(() => {
+            showPopup(e.target);
+        }, 150);
+    }
+}, true);
+
+document.addEventListener('mouseleave', (e) => {
+    if (e.target.classList.contains('member-tag') && e.target.classList.contains('has-info')) {
+        clearTimeout(popupTimeout);
+        popupTimeout = setTimeout(() => {
+            hidePopup();
+        }, 100);
+    }
+}, true);
+
+// Hide popup when scrolling
+document.addEventListener('scroll', () => {
+    hidePopup();
+}, true);
 
 // ============================================
 // Initialize
