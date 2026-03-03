@@ -607,7 +607,191 @@
     .result-stat-cards {
         grid-template-columns: repeat(2, 1fr) !important;
     }
+
+    /* Header Compact */
+    .header {
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+
+    .header-content {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+
+    .header-info {
+        width: 100%;
+        justify-content: center;
+        gap: var(--spacing-sm);
+    }
+
+    .logo-text h1 {
+        font-size: 1.3rem;
+    }
+
+    .logo-text p {
+        font-size: 0.75rem;
+    }
+
+    .logo-icon {
+        font-size: 1.8rem;
+    }
+
+    .course-code {
+        font-size: 0.7rem;
+        padding: 4px 10px;
+    }
+
+    /* Main Content Padding */
+    .main-content {
+        padding: var(--spacing-md);
+    }
+
+    /* Game Detail */
+    .game-detail-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .game-badges {
+        gap: 4px;
+    }
+
+    .badge {
+        font-size: 0.75rem;
+        padding: 3px 8px;
+    }
+
+    /* Video */
+    .video-container {
+        border-radius: var(--radius-md);
+        margin-bottom: var(--spacing-md);
+    }
+
+    .game-description-card {
+        padding: var(--spacing-md);
+    }
+
+    /* Play Button */
+    .btn-play {
+        font-size: 1rem;
+        padding: var(--spacing-sm) var(--spacing-lg);
+    }
+
+    /* Members */
+    .members-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-sm);
+    }
+
+    .member-img {
+        width: 70px;
+        height: 70px;
+    }
+
+    .member-name {
+        font-size: 0.85rem;
+    }
+
+    .member-id {
+        font-size: 0.7rem;
+    }
+
+    /* Star Rating — smaller on mobile */
+    .star-rating {
+        gap: 2px;
+        justify-content: center;
+    }
+
+    .star-rating label {
+        font-size: 1.4rem;
+    }
+
+    /* Survey Card */
+    .survey-card {
+        padding: var(--spacing-md);
+    }
+
+    .survey-header h2 {
+        font-size: 1.5rem !important;
+    }
+
+    .form-section-title {
+        font-size: 1rem;
+    }
+
+    /* Game Cards Grid */
+    .games-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Score bars */
+    .result-bar-group {
+        flex-wrap: wrap;
+    }
+
+    .bar-label {
+        width: 100%;
+        margin-bottom: 2px;
+    }
+
+    .bar-value {
+        width: auto;
+    }
+
+    /* Stat numbers */
+    .stat-number {
+        font-size: 1.8rem;
+    }
+
+    .stat-label {
+        font-size: 0.8rem;
+    }
+
+    /* Suggestions */
+    .suggestion-item {
+        flex-direction: column;
+        gap: var(--spacing-xs);
+    }
 }
+
+@media (max-width: 400px) {
+
+    /* Extra small screens */
+    .star-rating label {
+        font-size: 1.15rem;
+    }
+
+    .star-rating {
+        gap: 1px;
+    }
+
+    .result-stat-cards {
+        grid-template-columns: 1fr 1fr !important;
+        gap: var(--spacing-sm);
+    }
+
+    .stat-number {
+        font-size: 1.5rem;
+    }
+
+    .game-detail-header h2 {
+        font-size: 1.3rem;
+    }
+
+    .members-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .member-img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .btn-play {
+        font-size: 0.9rem;
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+}
+
 
 /* ============================================
    Results Dashboard
