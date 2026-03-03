@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Showcase - CPE5010</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/games.css">
+</head>
+
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <div class="stars"></div>
+        <div class="stars2"></div>
+        <div class="stars3"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <span class="logo-icon">🎮</span>
+                <div class="logo-text">
+                    <h1>CPE5010</h1>
+                    <p>การออกแบบและพัฒนาเกม</p>
+                </div>
+            </div>
+            <div class="header-info">
+                <span class="course-code">สอนโดย ผศ.ดร.รวิ อุตตมธนินทร์</span>
+                <button class="theme-toggle" id="themeToggle" title="สลับธีม">
+                    <span class="sun">☀️</span>
+                    <span class="moon">🌙</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="back-btn-container">
+            <a href="index.html" class="btn-back">
+                <span class="icon">❮</span> กลับหน้าหลัก
+            </a>
+        </div>
+
+        <section class="dashboard-section">
+            <div class="section-header">
+                <h2><span class="icon">🚀</span> Game Showcase</h2>
+            </div>
+            <p style="color: var(--text-secondary); margin-bottom: var(--spacing-lg);">
+                รวบรวมผลงานเกมของนักศึกษาในรายวิชาการออกแบบและพัฒนาเกม (CPE5010)
+                คุณสามารถเข้าไปทดลองเล่นและร่วมประเมินผลงานของแต่ละกลุ่มได้
+            </p>
+
+            <div class="games-grid">
+                <!-- Group 2 -->
+                <a href="game-group2.html" class="game-card">
+                    <div class="game-thumbnail">
+                        <img src="https://img.youtube.com/vi/_aGe6Bm9K9E/maxresdefault.jpg" alt="RTS ยุทธการไทย"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
+                        <span class="emoji-fallback" style="display:none;">⚔️</span>
+                    </div>
+                    <div class="game-info">
+                        <h3>RTS ยุทธการไทย</h3>
+                        <div class="game-group">กลุ่ม 2</div>
+                        <div class="game-desc">เป็นเกมแนว RTS อิงประวัติศาสตร์ไทยที่ได้รับแรงบันดาลใจจาก Warcraft และใช้
+                            HTML5 ในการสร้างและพัฒนาเกม</div>
+                    </div>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Custom Theme Toggle Logic to avoid referencing app.js which is tightly coupled to index.html modals
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeToggle = document.getElementById('themeToggle');
+            const root = document.documentElement;
+
+            // Load saved theme
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            if (savedTheme === 'light') {
+                root.setAttribute('data-theme', 'light');
+            }
+
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = root.getAttribute('data-theme') || 'dark';
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+                root.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+            });
+        });
+    </script>
+</body>
+
+</html>
