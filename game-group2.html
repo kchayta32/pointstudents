@@ -339,11 +339,85 @@
                     </form>
                 </div>
             </div>
+
+            <!-- Results Dashboard -->
+            <div class="survey-section">
+                <div class="survey-card">
+                    <div class="survey-header">
+                        <h2 style="font-size: 2rem;">📊 ผลการประเมิน</h2>
+                        <p style="color: var(--text-muted); margin-top: var(--spacing-sm);">ข้อมูลแสดงผลแบบ Real-time
+                            จากผู้ประเมินทั้งหมด</p>
+                    </div>
+
+                    <!-- Total Responses -->
+                    <div class="results-summary" id="resultsSummary">
+                        <div class="result-stat-cards">
+                            <div class="result-stat-card">
+                                <div class="stat-number" id="totalResponses">0</div>
+                                <div class="stat-label">จำนวนผู้ประเมิน</div>
+                            </div>
+                            <div class="result-stat-card">
+                                <div class="stat-number" id="avgOverall">-</div>
+                                <div class="stat-label">ค่าเฉลี่ยความพึงพอใจ</div>
+                            </div>
+                            <div class="result-stat-card">
+                                <div class="stat-number" id="avgDifficulty">-</div>
+                                <div class="stat-label">ค่าเฉลี่ยความยากง่าย</div>
+                            </div>
+                            <div class="result-stat-card">
+                                <div class="stat-number" id="avgAlgorithm">-</div>
+                                <div class="stat-label">ค่าเฉลี่ย Algorithm</div>
+                            </div>
+                        </div>
+
+                        <!-- Score Bars -->
+                        <div class="result-bars">
+                            <div class="result-bar-group">
+                                <span class="bar-label">ความพึงพอใจ</span>
+                                <div class="result-bar-track">
+                                    <div class="result-bar-fill" id="barOverall" style="width:0%"></div>
+                                </div>
+                                <span class="bar-value" id="barOverallVal">0/10</span>
+                            </div>
+                            <div class="result-bar-group">
+                                <span class="bar-label">ความยากง่าย</span>
+                                <div class="result-bar-track">
+                                    <div class="result-bar-fill bar-blue" id="barDifficulty" style="width:0%"></div>
+                                </div>
+                                <span class="bar-value" id="barDifficultyVal">0/10</span>
+                            </div>
+                            <div class="result-bar-group">
+                                <span class="bar-label">Algorithm</span>
+                                <div class="result-bar-track">
+                                    <div class="result-bar-fill bar-purple" id="barAlgorithm" style="width:0%"></div>
+                                </div>
+                                <span class="bar-value" id="barAlgorithmVal">0/10</span>
+                            </div>
+                        </div>
+
+                        <!-- Three Words Cloud -->
+                        <div class="result-words-section">
+                            <h3 style="margin-bottom: var(--spacing-md);">💬 3 คำ จากผู้ประเมิน</h3>
+                            <div class="word-cloud" id="wordCloud">
+                                <span class="word-empty">ยังไม่มีข้อมูล</span>
+                            </div>
+                        </div>
+
+                        <!-- Recent Suggestions -->
+                        <div class="result-suggestions-section">
+                            <h3 style="margin-bottom: var(--spacing-md);">📝 ข้อเสนอแนะล่าสุด</h3>
+                            <div class="suggestions-list" id="suggestionsList">
+                                <p class="word-empty">ยังไม่มีข้อเสนอแนะ</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
     </main>
 
     <script type="module">
-        import { database, ref, push, set } from './js/firebase-config.js';
+        import { database, ref, push, set, onValue } from './js/firebase-config.js';
         document.addEventListener('DOMContentLoaded', () => {
             // Theme setup
             const themeToggle = document.getElementById('themeToggle');
@@ -510,6 +584,95 @@
                 submitBtn.disabled = false;
             }
         }
+
+        // Real-time Results Loader
+        function loadResults() {
+            const surveysRef = ref(database, 'game_surveys/group2');
+            onValue(surveysRef, (snapshot) => {
+                const data = snapshot.val();
+                if (!data) return;
+
+                const entries = Object.values(data);
+                const total = entries.length;
+
+                // Calculate averages
+                let sumOverall = 0, countOverall = 0;
+                let sumDifficulty = 0, countDifficulty = 0;
+                let sumAlgorithm = 0, countAlgorithm = 0;
+                const allWords = [];
+                const allSuggestions = [];
+
+                entries.forEach(entry => {
+                    const ev = entry.evaluation || {};
+                    if (ev.scoreOverall != null) { sumOverall += ev.scoreOverall; countOverall++; }
+                    if (ev.scoreDifficulty != null) { sumDifficulty += ev.scoreDifficulty; countDifficulty++; }
+                    if (ev.scoreAlgorithm != null) { sumAlgorithm += ev.scoreAlgorithm; countAlgorithm++; }
+                    if (ev.threeWords && ev.threeWords.length > 0) {
+                        ev.threeWords.forEach(w => { if (w.trim()) allWords.push(w.trim()); });
+                    }
+                    if (ev.suggestions && ev.suggestions.trim()) {
+                        allSuggestions.push({ text: ev.suggestions.trim(), time: entry.timestamp });
+                    }
+                });
+
+                const avgO = countOverall > 0 ? (sumOverall / countOverall).toFixed(1) : '-';
+                const avgD = countDifficulty > 0 ? (sumDifficulty / countDifficulty).toFixed(1) : '-';
+                const avgA = countAlgorithm > 0 ? (sumAlgorithm / countAlgorithm).toFixed(1) : '-';
+
+                // Update stat cards
+                document.getElementById('totalResponses').textContent = total;
+                document.getElementById('avgOverall').textContent = avgO;
+                document.getElementById('avgDifficulty').textContent = avgD;
+                document.getElementById('avgAlgorithm').textContent = avgA;
+
+                // Update bars
+                const pctO = countOverall > 0 ? (sumOverall / countOverall) * 10 : 0;
+                const pctD = countDifficulty > 0 ? (sumDifficulty / countDifficulty) * 10 : 0;
+                const pctA = countAlgorithm > 0 ? (sumAlgorithm / countAlgorithm) * 10 : 0;
+
+                document.getElementById('barOverall').style.width = pctO + '%';
+                document.getElementById('barOverallVal').textContent = avgO + '/10';
+                document.getElementById('barDifficulty').style.width = pctD + '%';
+                document.getElementById('barDifficultyVal').textContent = avgD + '/10';
+                document.getElementById('barAlgorithm').style.width = pctA + '%';
+                document.getElementById('barAlgorithmVal').textContent = avgA + '/10';
+
+                // Word cloud
+                const wordCloud = document.getElementById('wordCloud');
+                if (allWords.length > 0) {
+                    // Count frequency
+                    const freq = {};
+                    allWords.forEach(w => { freq[w] = (freq[w] || 0) + 1; });
+                    const sorted = Object.entries(freq).sort((a, b) => b[1] - a[1]);
+                    const maxFreq = sorted[0][1];
+
+                    wordCloud.innerHTML = sorted.map(([word, count]) => {
+                        const size = 0.85 + (count / maxFreq) * 1.2;
+                        const opacity = 0.5 + (count / maxFreq) * 0.5;
+                        return `<span class="word-tag" style="font-size:${size}rem; opacity:${opacity}" title="${count} ครั้ง">${word}</span>`;
+                    }).join('');
+                } else {
+                    wordCloud.innerHTML = '<span class="word-empty">ยังไม่มีข้อมูล</span>';
+                }
+
+                // Suggestions (latest 5)
+                const suggestionsList = document.getElementById('suggestionsList');
+                if (allSuggestions.length > 0) {
+                    allSuggestions.sort((a, b) => new Date(b.time) - new Date(a.time));
+                    const latest = allSuggestions.slice(0, 5);
+                    suggestionsList.innerHTML = latest.map(s => {
+                        const d = new Date(s.time);
+                        const dateStr = d.toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' });
+                        return `<div class="suggestion-item"><p>${s.text}</p><span class="suggestion-date">${dateStr}</span></div>`;
+                    }).join('');
+                } else {
+                    suggestionsList.innerHTML = '<p class="word-empty">ยังไม่มีข้อเสนอแนะ</p>';
+                }
+            });
+        }
+
+        // Start loading results
+        loadResults();
     </script>
 </body>
 
