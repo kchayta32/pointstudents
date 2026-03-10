@@ -206,6 +206,42 @@
                 </div>
             </section>
         </div>
+
+        <!-- หมายเหตุ: สูตรคำนวณคะแนน -->
+        <section class="assignment-section" style="margin-top: var(--spacing-xl);">
+            <div class="section-header">
+                <h2><span class="icon">📌</span> หมายเหตุ</h2>
+            </div>
+            <div class="game-description-card"
+                style="background: var(--bg-card); border-radius: 16px; padding: var(--spacing-lg); border: 1px solid rgba(255,255,255,0.08);">
+                <h3 style="font-size: 1.2rem; margin-bottom: var(--spacing-md); color: var(--text-primary);">
+                    🎮 สูตรคำนวณคะแนนงาน "เปิดเกมเป็น Public ให้ผู้ใช้เล่นและประเมินผล" (คะแนนเต็ม 20)
+                </h3>
+                <p style="color: var(--text-secondary); line-height: 1.8; margin-bottom: var(--spacing-md);">
+                    คะแนนคำนวณอัตโนมัติจากผลการประเมินของผู้เล่นจริง (Real-time) ผ่านแบบประเมินใน Game Showcase โดยมี
+                    <strong>3 หมวดประเมิน</strong> (แต่ละหมวดเต็ม 10 คะแนน):
+                </p>
+                <ul
+                    style="color: var(--text-secondary); line-height: 2.2; padding-left: 1.5rem; margin-bottom: var(--spacing-md);">
+                    <li>หมวดที่ 1: <strong>ความพึงพอใจในการเล่นภาพรวม</strong> (เต็ม 10)</li>
+                    <li>หมวดที่ 2: <strong>ความยากง่ายในการเล่น / สมดุลเกม</strong> (เต็ม 10)</li>
+                    <li>หมวดที่ 3: <strong>ความสมเหตุสมผลของระบบเกมจาก Algorithm / Platform</strong> (เต็ม 10)</li>
+                </ul>
+                <div
+                    style="background: rgba(124, 58, 237, 0.1); border: 1px solid rgba(124, 58, 237, 0.3); border-radius: 12px; padding: var(--spacing-md); margin-bottom: var(--spacing-md);">
+                    <p style="color: var(--text-primary); font-weight: 500; margin-bottom: var(--spacing-sm);">📐
+                        สูตรคำนวณ:</p>
+                    <code style="display: block; color: var(--text-secondary); line-height: 2; font-size: 0.95rem;">
+                        1. ค่าเฉลี่ยรวม = (เฉลี่ยหมวด 1 + เฉลี่ยหมวด 2 + เฉลี่ยหมวด 3) ÷ 3<br>
+                        2. คะแนนที่ได้ = (ค่าเฉลี่ยรวม ÷ 10) × 20
+                    </code>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; font-style: italic;">
+                    💡 ตัวอย่าง: ถ้าค่าเฉลี่ยรวม 3 หมวด = 8.0/10 → คะแนนที่ได้ = (8.0 ÷ 10) × 20 = <strong>16.0
+                        คะแนน</strong> (จากเต็ม 20)
+                </p>
+            </div>
+        </section>
     </main>
 
     <!-- Add Assignment Modal -->

@@ -1325,8 +1325,148 @@ document.addEventListener('scroll', () => {
 }, true);
 
 // ============================================
+// Game Survey Auto-Scoring System
+// คะแนนงาน "เปิดเกมเป็น Public ให้ผู้ใช้เล่นและประเมินผล"
+// คะแนนเต็ม 20 คำนวณจากค่าเฉลี่ยผลประเมิน 3 หมวด
+// ============================================
+const GAME_SURVEY_ASSIGNMENT_NAME = 'เปิดเกมเป็น Public ให้ผู้ใช้เล่นและประเมินผล';
+const GAME_SURVEY_MAX_SCORE = 20;
+
+// Mapping: groupId → Firebase survey path
+// เพิ่มกลุ่มใหม่โดยเปิด comment เมื่อกลุ่มนั้นมี game page พร้อมแบบประเมินแล้ว
+const gameSurveyGroupMap = {
+    // "1": "group1",
+    "2": "group2",
+    // "3": "group3",
+    "4": "group4",
+    // "5": "group5",
+    // "6": "group6",
+    // "7": "group7",
+    // "8": "group8",
+    // "9": "group9",
+    // "10": "group10",
+    // "11": "group11",
+    // "12": "group12",
+};
+
+let gameSurveyAssignmentId = null;
+
+async function initGameSurveyAutoScoring() {
+    try {
+        // Wait a bit for assignments to load first
+        await new Promise(resolve => setTimeout(resolve, 1500));
+
+        // Find or create the special assignment
+        gameSurveyAssignmentId = findGameSurveyAssignment();
+
+        if (!gameSurveyAssignmentId) {
+            // Create the assignment automatically
+            console.log('Creating game survey assignment...');
+            const assignmentsRef = ref(database, 'courses/CPE5010/assignments');
+            const newRef = push(assignmentsRef);
+            gameSurveyAssignmentId = newRef.key;
+
+            await set(newRef, {
+                name: GAME_SURVEY_ASSIGNMENT_NAME,
+                maxScore: GAME_SURVEY_MAX_SCORE,
+                dueDate: null,
+                createdAt: new Date().toISOString()
+            });
+            console.log('Created game survey assignment:', gameSurveyAssignmentId);
+        } else {
+            console.log('Found existing game survey assignment:', gameSurveyAssignmentId);
+        }
+
+        // Start listening to survey data for each active group
+        Object.entries(gameSurveyGroupMap).forEach(([groupId, surveyPath]) => {
+            listenToGroupSurvey(groupId, surveyPath);
+        });
+
+    } catch (error) {
+        console.error('Error initializing game survey auto-scoring:', error);
+    }
+}
+
+function findGameSurveyAssignment() {
+    for (const [id, assignment] of Object.entries(assignments)) {
+        if (assignment.name === GAME_SURVEY_ASSIGNMENT_NAME) {
+            return id;
+        }
+    }
+    return null;
+}
+
+function listenToGroupSurvey(groupId, surveyPath) {
+    const surveysRef = ref(database, `game_surveys/${surveyPath}`);
+    onValue(surveysRef, (snapshot) => {
+        const data = snapshot.val();
+        if (!data || !gameSurveyAssignmentId) return;
+
+        const score = calculateSurveyScore(data);
+        if (score !== null) {
+            saveSurveyScore(groupId, score, Object.keys(data).length);
+        }
+    });
+}
+
+function calculateSurveyScore(surveyData) {
+    const entries = Object.values(surveyData);
+    if (entries.length === 0) return null;
+
+    let sumOverall = 0, countOverall = 0;
+    let sumDifficulty = 0, countDifficulty = 0;
+    let sumAlgorithm = 0, countAlgorithm = 0;
+
+    entries.forEach(entry => {
+        const ev = entry.evaluation || {};
+        if (ev.scoreOverall != null) { sumOverall += ev.scoreOverall; countOverall++; }
+        if (ev.scoreDifficulty != null) { sumDifficulty += ev.scoreDifficulty; countDifficulty++; }
+        if (ev.scoreAlgorithm != null) { sumAlgorithm += ev.scoreAlgorithm; countAlgorithm++; }
+    });
+
+    // Calculate average of each category (out of 10)
+    const avgOverall = countOverall > 0 ? sumOverall / countOverall : 0;
+    const avgDifficulty = countDifficulty > 0 ? sumDifficulty / countDifficulty : 0;
+    const avgAlgorithm = countAlgorithm > 0 ? sumAlgorithm / countAlgorithm : 0;
+
+    // Grand average of 3 categories (out of 10)
+    let categoryCount = 0;
+    let categorySum = 0;
+    if (countOverall > 0) { categorySum += avgOverall; categoryCount++; }
+    if (countDifficulty > 0) { categorySum += avgDifficulty; categoryCount++; }
+    if (countAlgorithm > 0) { categorySum += avgAlgorithm; categoryCount++; }
+
+    if (categoryCount === 0) return null;
+
+    const grandAverage = categorySum / categoryCount; // out of 10
+    // Scale to maxScore (20)
+    const finalScore = (grandAverage / 10) * GAME_SURVEY_MAX_SCORE;
+
+    return Math.round(finalScore * 10) / 10; // Round to 1 decimal
+}
+
+async function saveSurveyScore(groupId, score, responseCount) {
+    try {
+        const submissionRef = ref(database, `courses/CPE5010/groups/${groupId}/submissions/${gameSurveyAssignmentId}`);
+        await set(submissionRef, {
+            score,
+            status: 'submitted',
+            link: null,
+            submittedAt: new Date().toISOString(),
+            autoScored: true,
+            responseCount
+        });
+        console.log(`Auto-scored group ${groupId}: ${score}/${GAME_SURVEY_MAX_SCORE} (${responseCount} responses)`);
+    } catch (error) {
+        console.error(`Error saving survey score for group ${groupId}:`, error);
+    }
+}
+
+// ============================================
 // Initialize
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
     initializeData();
+    // Start game survey auto-scoring after data is loaded
+    initGameSurveyAutoScoring();
 });
