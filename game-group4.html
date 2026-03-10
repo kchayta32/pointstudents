@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escape from the Abandoned Hospital - Group 4</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/games.css">
+</head>
+
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <div class="stars"></div>
+        <div class="stars2"></div>
+        <div class="stars3"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <span class="logo-icon">🎮</span>
+                <div class="logo-text">
+                    <h1>CPE5010</h1>
+                    <p>การออกแบบและพัฒนาเกม</p>
+                </div>
+            </div>
+            <div class="header-info">
+                <span class="course-code">สอนโดย ผศ.ดร.รวิ อุตตมธนินทร์</span>
+                <button class="theme-toggle" id="themeToggle" title="สลับธีม">
+                    <span class="sun">☀️</span>
+                    <span class="moon">🌙</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="back-btn-container">
+            <a href="games.html" class="btn-back">
+                <span class="icon">❮</span> กลับหน้ารายการเกม
+            </a>
+        </div>
+
+        <section class="game-detail-section">
+            <div class="game-detail-header">
+                <h2>Escape from the Abandoned Hospital</h2>
+                <div class="game-badges">
+                    <span class="badge">กลุ่ม 4</span>
+                    <span class="badge">Roblox</span>
+                    <span class="badge">Horror Survival</span>
+                    <span class="badge">Co-op</span>
+                </div>
+            </div>
+
+            <!-- YouTube Video -->
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/qZrijFaABaA" title="Escape from the Abandoned Hospital"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+            </div>
+
+            <div class="game-description-card">
+                <h3 style="font-size: 1.5rem; margin-bottom: var(--spacing-sm);">📖 Story</h3>
+                <p style="color: var(--text-secondary); line-height: 1.8;">
+                    เขาลืมตาขึ้นมาพร้อมความเจ็บแปลบที่ศีรษะเพดานสีขาวที่แตกร้าวค่อย ๆ ปรากฏในสายตา
+                    เสียงเครื่องมือแพทย์ดังแผว ๆ อยู่ที่ไหนสักแห่งทั้งที่ไฟในหองแทบไม่ทำงานร่างกายนอนอยู่บนเตียงคนไข
+                    สายบางอย่างยังพันอยู่ที่ข้อมือแต่รอบตัวกลับไร้เงาของหมอ พยาบาล
+                    หรือคนไข้คนอื่นโรงพยาบาลแห่งนี้เงียบเกินกว่าจะเป็นสถานที่รักษาชีวิต
+                    เขาจำไมได้ว่ามาที่นี่ได้อย่างไรความทรงจำก่อนหน้านั้นขาดหายเหลือเพียงความรู้สึกว่า
+                    ไม่ควรตื่นขึ้นมาในที่แห่งนี้เมื่อก้าวออกจากห้องทางเดินยาวทอดเข้าสู่ความมืด
+                    ไฟนีออนกระพริบเป็นจังหวะไม่สม่ำเสมอเสียงฝีเท้าของตัวเองดังชัดเกินไปในความเงียบบางครั้ง ...
+                    มีเสียงล้อเตียงเข็นผ่านมีเงาสะท้อนในกระจกที่ขยับช้ากว่าปกติราวกับโรงพยาบาลยังไม่ยอมรับว่าเขา
+                    "มีชีวิตอยู่"
+                    ยิ่งเดินลึกเข้าไปยิ่งพบร่องรอยของเหตุการณ์ที่ถูกปกปิดเอกสารคนไข้ที่ถูกฉีกห้องผ่าตัดที่ถูกทิ้งค้างไว้
+                    และพื้นที่ต้องห้ามที่ไม่ควรถูกเปิดอีกครั้งที่นี่ไม่ใช่แค่โรงพยาบาลร้างแต่มันคือสถานที่ที่ความตายยังคงเฝ้ารอคำตอบบางอย่างและการตื่นขึ้นมา
+                    ... อาจไม่ใช่เรื่องบังเอิญ
+                </p>
+
+                <h3 style="font-size: 1.5rem; margin-top: var(--spacing-2xl); margin-bottom: var(--spacing-sm);">🎮
+                    Guidelines</h3>
+                <p style="color: var(--text-secondary); line-height: 1.8; margin-bottom: var(--spacing-md);">
+                    เกมแนว Horror Survival มุมมองบุคคลที่หนึ่ง (First Person)<br>
+                    รองรับการเลนแบบ Co-op สูงสุด 4 คน<br>
+                    เน้นการเอาตัวรอด การสำรวจ และความกดดันจากบรรยากาศ<br>
+                    ไม่มีการต่อสูกับศัตรูโดยตรง
+                </p>
+
+                <h4 style="color: var(--text-primary); margin-bottom: var(--spacing-sm);">รูปแบบการเล่นหลัก (Core
+                    Gameplay)</h4>
+                <ul
+                    style="color: var(--text-secondary); line-height: 2; padding-left: 1.5rem; margin-bottom: var(--spacing-md);">
+                    <li>เริ่มเกมที่ ชั้น 10</li>
+                    <li>สำรวจพื้นที่ หาไอเทม และ กุญแจประจำชั้น</li>
+                    <li>เปิดทางลง ไปยังชั้นถัดไป</li>
+                    <li>เป้าหมายคือ เอาตัวรอดจนถึงชั้น 1</li>
+                    <li>ไม่สามารถย้อนกลับไปชั้นบนได้</li>
+                </ul>
+
+                <h4 style="color: var(--text-primary); margin-bottom: var(--spacing-sm);">ไอเทมภายในเกม</h4>
+                <ul
+                    style="color: var(--text-secondary); line-height: 2; padding-left: 1.5rem; margin-bottom: var(--spacing-md);">
+                    <li>กุญแจสำหรับเปิดทางไปชั้นถัดไป</li>
+                    <li>ยา ฟื้นฟูพลังชีวิต</li>
+                    <li>ไอเทมสตันผี เพื่อยื้อเวลา</li>
+                    <li>ไฟฉาย ใช้สำรวจในความมืด</li>
+                </ul>
+
+                <h4 style="color: var(--text-primary); margin-bottom: var(--spacing-sm);">ศัตรูและการเอาตัวรอด</h4>
+                <ul
+                    style="color: var(--text-secondary); line-height: 2; padding-left: 1.5rem; margin-bottom: var(--spacing-md);">
+                    <li>ผีหรือสิ่งคุกคามจะ ค่อย ๆ ตามทำร้าย</li>
+                    <li>เมื่อถูกโจมตี พลังชีวิตจะลดลงเรื่อย ๆ</li>
+                    <li>ไม่มีอาวุธฆ่าศัตรู</li>
+                    <li>ผู้เลนตองหลบซอน วิ่งหนี และใช้ไอเทมอย่างจำกัด</li>
+                </ul>
+
+                <h3 style="font-size: 1.5rem; margin-top: var(--spacing-2xl); margin-bottom: var(--spacing-sm);">🖥️
+                    Platform</h3>
+                <p style="color: var(--text-secondary); line-height: 1.8;">
+                    Developed on Roblox Platform
+                </p>
+
+                <!-- วิธีการเข้าทดลองเล่นเกม -->
+                <h3 style="font-size: 1.5rem; margin-top: var(--spacing-2xl); margin-bottom: var(--spacing-sm);">🕹️
+                    วิธีการเข้าทดลองเล่นเกมก่อนทำแบบประเมิน</h3>
+            </div>
+
+            <!-- Tutorial Video -->
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/9ZnmlrXH-AY" title="วิธีการเข้าทดลองเล่นเกม"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+            </div>
+
+            <div class="game-description-card">
+                <!-- Members -->
+                <h3
+                    style="font-size: 1.5rem; margin-top: var(--spacing-lg); border-top: 1px solid rgba(255,255,255,0.1); padding-top: var(--spacing-lg);">
+                    สมาชิกในกลุ่ม</h3>
+                <div class="members-grid">
+                    <div class="member-card">
+                        <img src="images/สหรัฐ.png" alt="สหรัฐ" class="member-img"
+                            onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\'><rect width=\'100\' height=\'100\' fill=\'%23333\'/><text x=\'50\' y=\'55\' font-family=\'Arial\' font-size=\'40\' fill=\'white\' text-anchor=\'middle\'>👤</text></svg>'">
+                        <div class="member-name">นายสหรัฐ เทศน์ดี</div>
+                        <div class="member-id">66122519052</div>
+                    </div>
+                    <div class="member-card">
+                        <img src="images/ตรีเพชร.png" alt="ตรีเพชร" class="member-img"
+                            onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\'><rect width=\'100\' height=\'100\' fill=\'%23333\'/><text x=\'50\' y=\'55\' font-family=\'Arial\' font-size=\'40\' fill=\'white\' text-anchor=\'middle\'>👤</text></svg>'">
+                        <div class="member-name">นายตรีเพชร รุ่งเรือง</div>
+                        <div class="member-id">66122519069</div>
+                    </div>
+                    <div class="member-card">
+                        <img src="images/ปิติภัทร.png" alt="ปิติภัทร" class="member-img"
+                            onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\'><rect width=\'100\' height=\'100\' fill=\'%23333\'/><text x=\'50\' y=\'55\' font-family=\'Arial\' font-size=\'40\' fill=\'white\' text-anchor=\'middle\'>👤</text></svg>'">
+                        <div class="member-name">นายปิติภัทร จันทร์เพ็ญ</div>
+                        <div class="member-id">66122519071</div>
+                    </div>
+                    <div class="member-card">
+                        <img src="images/เพชรพลอย.png" alt="เพชรพลอย" class="member-img"
+                            onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\'><rect width=\'100\' height=\'100\' fill=\'%23333\'/><text x=\'50\' y=\'55\' font-family=\'Arial\' font-size=\'40\' fill=\'white\' text-anchor=\'middle\'>👤</text></svg>'">
+                        <div class="member-name">นางสาวเพชรพลอย วงศ์มณี</div>
+                        <div class="member-id">66122519080</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Survey Section -->
+            <div class="survey-section">
+                <div class="survey-card">
+                    <div class="survey-header">
+                        <h2 style="font-size: 2rem;">📝 แบบประเมินความพึงพอใจ</h2>
+                        <p style="color: var(--text-muted); margin-top: var(--spacing-sm);">
+                            ขอขอบคุณที่ร่วมเป็นส่วนหนึ่งในการประเมินผลงานเกมของเรา</p>
+                    </div>
+
+                    <form id="surveyForm" onsubmit="event.preventDefault(); submitSurvey();">
+
+                        <!-- Part 1: PDPA -->
+                        <div class="form-section">
+                            <h3 class="form-section-title">ส่วนที่ 1: การให้ความยินยอม (PDPA)</h3>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="pdpaConsent" required>
+                                <div>
+                                    <span
+                                        style="font-weight: 500;">ข้าพเจ้ายินยอมให้เก็บรวบรวมข้อมูลส่วนบุคคลเบื้องต้น</span>
+                                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 5px;">
+                                        เพื่อนำไปใช้วิเคราะห์ผลสำหรับการพัฒนาเกมทางวิชาการเท่านั้น
+                                        ข้อมูลของคุณจะถูกเก็บเป็นความลับตามพระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล (PDPA)
+                                    </p>
+                                </div>
+                            </label>
+                        </div>
+
+                        <!-- Part 2: Demographics -->
+                        <div class="form-section" id="demographicsSection"
+                            style="opacity: 0.5; pointer-events: none; transition: 0.3s;">
+                            <h3 class="form-section-title">ส่วนที่ 2: ข้อมูลทั่วไปของผู้ตอบแบบสอบถาม (ไม่บังคับ)</h3>
+
+                            <div class="game-form-group">
+                                <label>1. เพศ</label>
+                                <div class="radio-group">
+                                    <label class="radio-label"><input type="radio" name="gender" value="ชาย">
+                                        ชาย</label>
+                                    <label class="radio-label"><input type="radio" name="gender" value="หญิง">
+                                        หญิง</label>
+                                    <label class="radio-label"><input type="radio" name="gender" value="อื่นๆ">
+                                        อื่นๆ</label>
+                                </div>
+                            </div>
+
+                            <div class="game-form-group">
+                                <label>2. อายุ</label>
+                                <input type="number" name="age" placeholder="ระบุอายุ (ปี)" min="1" max="120">
+                            </div>
+
+                            <div class="game-form-group">
+                                <label>3. อาชีพ</label>
+                                <div class="radio-group">
+                                    <label class="radio-label"><input type="radio" name="occupation" value="student">
+                                        นักศึกษา</label>
+                                    <label class="radio-label"><input type="radio" name="occupation" value="teacher">
+                                        อาจารย์</label>
+                                    <label class="radio-label"><input type="radio" name="occupation" value="general">
+                                        บุคคลทั่วไป</label>
+                                </div>
+                            </div>
+
+                            <!-- Dependent Fields -->
+                            <div class="dependent-fields" id="studentTeacherFields" style="display: none;">
+                                <div class="game-form-group">
+                                    <label>หลักสูตร / สาขาวิชา</label>
+                                    <select name="faculty" id="facultySelect">
+                                        <option value="">-- กรุณาเลือกสาขาวิชา --</option>
+                                        <optgroup label="1. วิศวกรรมศาสตรบัณฑิต (วศ.บ.)">
+                                            <option value="Computer Engineering">สาขาวิชาวิศวกรรมคอมพิวเตอร์</option>
+                                            <option value="Robotics Engineering">สาขาวิชาวิศวกรรมหุ่นยนต์</option>
+                                            <option value="Engineering Management">สาขาวิชาการจัดการวิศวกรรม</option>
+                                        </optgroup>
+                                        <optgroup label="2. วิทยาศาสตรบัณฑิต (วท.บ.)">
+                                            <option value="Safety Technology">สาขาวิชาเทคโนโลยีความปลอดภัยและอาชีวอนามัย
+                                            </option>
+                                            <option value="Electrical Technology">สาขาวิชาเทคโนโลยีไฟฟ้า</option>
+                                            <option value="Real Estate">สาขาวิชาการจัดการอสังหาริมทรัพย์และทรัพยากรอาคาร
+                                            </option>
+                                        </optgroup>
+                                        <optgroup label="3. การออกแบบบัณฑิต (อบ.บ.)">
+                                            <option value="Exhibition Design">
+                                                สาขาวิชาการออกแบบนิทรรศการและสื่อสร้างสรรค์</option>
+                                            <option value="Product Packaging">สาขาวิชาการออกแบบผลิตภัณฑ์
+                                                บรรจุภัณฑ์และนวัตกรรม</option>
+                                            <option value="Graphic and Multimedia">สาขาวิชาการออกแบบกราฟิกและมัลติมีเดีย
+                                            </option>
+                                        </optgroup>
+                                        <optgroup label="4. ครุศาสตร์อุตสาหกรรมบัณฑิต (ค.อ.บ)">
+                                            <option value="Industrial Arts">สาขาวิชาอุตสาหกรรมศิลป์และวิทยาศาสตร์
+                                            </option>
+                                        </optgroup>
+                                        <option value="other_faculty">5. อื่นๆ (ระบุ)</option>
+                                    </select>
+                                    <input type="text" name="other_faculty" id="otherFacultyInput"
+                                        placeholder="โปรดระบุสาขาวิชา" style="display: none; margin-top: 10px;">
+                                </div>
+
+                                <div class="game-form-group">
+                                    <label>มหาวิทยาลัย</label>
+                                    <select name="university" id="universitySelect">
+                                        <option value="">-- กรุณาเลือกมหาวิทยาลัย --</option>
+                                        <option value="ssru">1. มหาวิทยาลัยราชภัฏสวนสุนันทา</option>
+                                        <option value="suandusit">2. มหาวิทยาลัยสวนดุสิต</option>
+                                        <option value="other_uni">3. อื่นๆ</option>
+                                    </select>
+                                    <input type="text" name="other_university" id="otherUniversityInput"
+                                        placeholder="โปรดระบุมหาวิทยาลัย" style="display: none; margin-top: 10px;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Part 3: Evaluation -->
+                        <div class="form-section" id="evaluationSection"
+                            style="opacity: 0.5; pointer-events: none; transition: 0.3s;">
+                            <h3 class="form-section-title">ส่วนที่ 3: ระดับความพึงพอใจ (คะแนนเต็ม 10)</h3>
+
+                            <div class="rating-group">
+                                <span class="rating-label">1. ความพึงพอใจในการเล่นภาพรวม</span>
+                                <div class="star-rating">
+                                    <input type="radio" id="g4s1-10" name="score_overall" value="10"><label
+                                        for="g4s1-10" title="10 คะแนน"></label>
+                                    <input type="radio" id="g4s1-9" name="score_overall" value="9"><label for="g4s1-9"
+                                        title="9 คะแนน"></label>
+                                    <input type="radio" id="g4s1-8" name="score_overall" value="8"><label for="g4s1-8"
+                                        title="8 คะแนน"></label>
+                                    <input type="radio" id="g4s1-7" name="score_overall" value="7"><label for="g4s1-7"
+                                        title="7 คะแนน"></label>
+                                    <input type="radio" id="g4s1-6" name="score_overall" value="6"><label for="g4s1-6"
+                                        title="6 คะแนน"></label>
+                                    <input type="radio" id="g4s1-5" name="score_overall" value="5"><label for="g4s1-5"
+                                        title="5 คะแนน"></label>
+                                    <input type="radio" id="g4s1-4" name="score_overall" value="4"><label for="g4s1-4"
+                                        title="4 คะแนน"></label>
+                                    <input type="radio" id="g4s1-3" name="score_overall" value="3"><label for="g4s1-3"
+                                        title="3 คะแนน"></label>
+                                    <input type="radio" id="g4s1-2" name="score_overall" value="2"><label for="g4s1-2"
+                                        title="2 คะแนน"></label>
+                                    <input type="radio" id="g4s1-1" name="score_overall" value="1"><label for="g4s1-1"
+                                        title="1 คะแนน"></label>
+                                </div>
+                            </div>
+
+                            <div class="rating-group">
+                                <span class="rating-label">2. ความยากง่ายในการเล่น (สมดุลเกม)</span>
+                                <div class="star-rating">
+                                    <input type="radio" id="g4s2-10" name="score_difficulty" value="10"><label
+                                        for="g4s2-10" title="10 คะแนน"></label>
+                                    <input type="radio" id="g4s2-9" name="score_difficulty" value="9"><label
+                                        for="g4s2-9" title="9 คะแนน"></label>
+                                    <input type="radio" id="g4s2-8" name="score_difficulty" value="8"><label
+                                        for="g4s2-8" title="8 คะแนน"></label>
+                                    <input type="radio" id="g4s2-7" name="score_difficulty" value="7"><label
+                                        for="g4s2-7" title="7 คะแนน"></label>
+                                    <input type="radio" id="g4s2-6" name="score_difficulty" value="6"><label
+                                        for="g4s2-6" title="6 คะแนน"></label>
+                                    <input type="radio" id="g4s2-5" name="score_difficulty" value="5"><label
+                                        for="g4s2-5" title="5 คะแนน"></label>
+                                    <input type="radio" id="g4s2-4" name="score_difficulty" value="4"><label
+                                        for="g4s2-4" title="4 คะแนน"></label>
+                                    <input type="radio" id="g4s2-3" name="score_difficulty" value="3"><label
+                                        for="g4s2-3" title="3 คะแนน"></label>
+                                    <input type="radio" id="g4s2-2" name="score_difficulty" value="2"><label
+                                        for="g4s2-2" title="2 คะแนน"></label>
+                                    <input type="radio" id="g4s2-1" name="score_difficulty" value="1"><label
+                                        for="g4s2-1" title="1 คะแนน"></label>
+                                </div>
+                            </div>
+
+                            <div class="rating-group">
+                                <span class="rating-label">3. คะแนนความสมเหตุสมผลของระบบเกมจากการใช้ Roblox Platform
+                                    ในการสร้างเกม</span>
+                                <div class="star-rating">
+                                    <input type="radio" id="g4s3-10" name="score_algorithm" value="10"><label
+                                        for="g4s3-10" title="10 คะแนน"></label>
+                                    <input type="radio" id="g4s3-9" name="score_algorithm" value="9"><label for="g4s3-9"
+                                        title="9 คะแนน"></label>
+                                    <input type="radio" id="g4s3-8" name="score_algorithm" value="8"><label for="g4s3-8"
+                                        title="8 คะแนน"></label>
+                                    <input type="radio" id="g4s3-7" name="score_algorithm" value="7"><label for="g4s3-7"
+                                        title="7 คะแนน"></label>
+                                    <input type="radio" id="g4s3-6" name="score_algorithm" value="6"><label for="g4s3-6"
+                                        title="6 คะแนน"></label>
+                                    <input type="radio" id="g4s3-5" name="score_algorithm" value="5"><label for="g4s3-5"
+                                        title="5 คะแนน"></label>
+                                    <input type="radio" id="g4s3-4" name="score_algorithm" value="4"><label for="g4s3-4"
+                                        title="4 คะแนน"></label>
+                                    <input type="radio" id="g4s3-3" name="score_algorithm" value="3"><label for="g4s3-3"
+                                        title="3 คะแนน"></label>
+                                    <input type="radio" id="g4s3-2" name="score_algorithm" value="2"><label for="g4s3-2"
+                                        title="2 คะแนน"></label>
+                                    <input type="radio" id="g4s3-1" name="score_algorithm" value="1"><label for="g4s3-1"
+                                        title="1 คะแนน"></label>
+                                </div>
+                            </div>
+
+                            <div class="game-form-group">
+                                <label>ขอ 3 คำ สำหรับเกมของกลุ่มนี้!</label>
+                                <div class="three-words-container">
+                                    <input type="text" name="word1" maxlength="15" placeholder="คำที่ 1">
+                                    <input type="text" name="word2" maxlength="15" placeholder="คำที่ 2">
+                                    <input type="text" name="word3" maxlength="15" placeholder="คำที่ 3">
+                                </div>
+                            </div>
+
+                            <div class="game-form-group">
+                                <label>ข้อเสนอแนะเพิ่มเติมเพื่อการพัฒนา</label>
+                                <textarea name="suggestions" rows="4"
+                                    placeholder="พิมพ์ข้อเสนอแนะของคุณที่นี่..."></textarea>
+                            </div>
+
+                        </div>
+
+                        <button type="submit" class="btn-play btn-submit-survey" id="submitBtn" disabled
+                            style="opacity: 0.5; cursor: not-allowed;">
+                            ส่งแบบประเมินผลงาน
+                        </button>
+
+                    </form>
+                </div>
+            </div>
+
+            <!-- Results Dashboard -->
+            <div class="survey-section">
+                <div class="survey-card">
+                    <div class="survey-header">
+                        <h2 style="font-size: 2rem;">📊 ผลการประเมิน</h2>
+                        <p style="color: var(--text-muted); margin-top: var(--spacing-sm);">ข้อมูลแสดงผลแบบ Real-time
+                            จากผู้ประเมินทั้งหมด</p>
+                    </div>
+
+                    <!-- Total Responses -->
+                    <div class="results-summary" id="resultsSummary">
+                        <div class="result-stat-cards">
+                            <div class="result-stat-card">
+                                <div class="stat-number" id="totalResponses">0</div>
+                                <div class="stat-label">จำนวนผู้ประเมิน</div>
+                            </div>
+                            <div class="result-stat-card">
+                                <div class="stat-number" id="avgOverall">-</div>
+                                <div class="stat-label">ค่าเฉลี่ยความพึงพอใจ</div>
+                            </div>
+                            <div class="result-stat-card">
+                                <div class="stat-number" id="avgDifficulty">-</div>
+                                <div class="stat-label">ค่าเฉลี่ยความยากง่าย</div>
+                            </div>
+                            <div class="result-stat-card">
+                                <div class="stat-number" id="avgAlgorithm">-</div>
+                                <div class="stat-label">ค่าเฉลี่ย Platform</div>
+                            </div>
+                        </div>
+
+                        <!-- Score Bars -->
+                        <div class="result-bars">
+                            <div class="result-bar-group">
+                                <span class="bar-label">ความพึงพอใจ</span>
+                                <div class="result-bar-track">
+                                    <div class="result-bar-fill" id="barOverall" style="width:0%"></div>
+                                </div>
+                                <span class="bar-value" id="barOverallVal">0/10</span>
+                            </div>
+                            <div class="result-bar-group">
+                                <span class="bar-label">ความยากง่าย</span>
+                                <div class="result-bar-track">
+                                    <div class="result-bar-fill bar-blue" id="barDifficulty" style="width:0%"></div>
+                                </div>
+                                <span class="bar-value" id="barDifficultyVal">0/10</span>
+                            </div>
+                            <div class="result-bar-group">
+                                <span class="bar-label">Platform</span>
+                                <div class="result-bar-track">
+                                    <div class="result-bar-fill bar-purple" id="barAlgorithm" style="width:0%"></div>
+                                </div>
+                                <span class="bar-value" id="barAlgorithmVal">0/10</span>
+                            </div>
+                        </div>
+
+                        <!-- Three Words Cloud -->
+                        <div class="result-words-section">
+                            <h3 style="margin-bottom: var(--spacing-md);">💬 3 คำ จากผู้ประเมิน</h3>
+                            <div class="word-cloud" id="wordCloud">
+                                <span class="word-empty">ยังไม่มีข้อมูล</span>
+                            </div>
+                        </div>
+
+                        <!-- Recent Suggestions -->
+                        <div class="result-suggestions-section">
+                            <h3 style="margin-bottom: var(--spacing-md);">📝 ข้อเสนอแนะล่าสุด</h3>
+                            <div class="suggestions-list" id="suggestionsList">
+                                <p class="word-empty">ยังไม่มีข้อเสนอแนะ</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script type="module">
+        import { database, ref, push, set, onValue } from './js/firebase-config.js';
+        document.addEventListener('DOMContentLoaded', () => {
+            // Theme setup
+            const themeToggle = document.getElementById('themeToggle');
+            const root = document.documentElement;
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            if (savedTheme === 'light') {
+                root.setAttribute('data-theme', 'light');
+            }
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = root.getAttribute('data-theme') || 'dark';
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                root.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+            });
+
+            // Form Logic
+            const pdpaConsent = document.getElementById('pdpaConsent');
+            const demographicsSection = document.getElementById('demographicsSection');
+            const evaluationSection = document.getElementById('evaluationSection');
+            const submitBtn = document.getElementById('submitBtn');
+
+            pdpaConsent.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    demographicsSection.style.opacity = '1';
+                    demographicsSection.style.pointerEvents = 'auto';
+                    evaluationSection.style.opacity = '1';
+                    evaluationSection.style.pointerEvents = 'auto';
+
+                    submitBtn.disabled = false;
+                    submitBtn.style.opacity = '1';
+                    submitBtn.style.cursor = 'pointer';
+                } else {
+                    demographicsSection.style.opacity = '0.5';
+                    demographicsSection.style.pointerEvents = 'none';
+                    evaluationSection.style.opacity = '0.5';
+                    evaluationSection.style.pointerEvents = 'none';
+
+                    submitBtn.disabled = true;
+                    submitBtn.style.opacity = '0.5';
+                    submitBtn.style.cursor = 'not-allowed';
+                }
+            });
+
+            // Occupation logic
+            const occupationRadios = document.querySelectorAll('input[name="occupation"]');
+            const studentTeacherFields = document.getElementById('studentTeacherFields');
+
+            occupationRadios.forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    if (e.target.value === 'student' || e.target.value === 'teacher') {
+                        studentTeacherFields.style.display = 'block';
+                    } else {
+                        studentTeacherFields.style.display = 'none';
+                    }
+                });
+            });
+
+            // Faculty "Other" logic
+            const facultySelect = document.getElementById('facultySelect');
+            const otherFacultyInput = document.getElementById('otherFacultyInput');
+            facultySelect.addEventListener('change', (e) => {
+                if (e.target.value === 'other_faculty') {
+                    otherFacultyInput.style.display = 'block';
+                } else {
+                    otherFacultyInput.style.display = 'none';
+                }
+            });
+
+            // University "Other" logic
+            const universitySelect = document.getElementById('universitySelect');
+            const otherUniversityInput = document.getElementById('otherUniversityInput');
+            universitySelect.addEventListener('change', (e) => {
+                if (e.target.value === 'other_uni') {
+                    otherUniversityInput.style.display = 'block';
+                } else {
+                    otherUniversityInput.style.display = 'none';
+                }
+            });
+        });
+
+        // Form Submit
+        window.submitSurvey = async function () {
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.innerHTML;
+
+            try {
+                submitBtn.innerHTML = 'กำลังส่งข้อมูล... ⏳';
+                submitBtn.disabled = true;
+
+                // Collect data
+                const gender = document.querySelector('input[name="gender"]:checked')?.value || '';
+                const age = document.querySelector('input[name="age"]').value || null;
+                const occupation = document.querySelector('input[name="occupation"]:checked')?.value || '';
+
+                let faculty = '';
+                let university = '';
+
+                if (occupation === 'student' || occupation === 'teacher') {
+                    const facultySelect = document.getElementById('facultySelect').value;
+                    faculty = facultySelect === 'other_faculty' ? document.getElementById('otherFacultyInput').value : facultySelect;
+
+                    const universitySelect = document.getElementById('universitySelect').value;
+                    university = universitySelect === 'other_uni' ? document.getElementById('otherUniversityInput').value : universitySelect;
+                }
+
+                const scoreOverall = document.querySelector('input[name="score_overall"]:checked')?.value || null;
+                const scoreDifficulty = document.querySelector('input[name="score_difficulty"]:checked')?.value || null;
+                const scoreAlgorithm = document.querySelector('input[name="score_algorithm"]:checked')?.value || null;
+
+                const word1 = document.querySelector('input[name="word1"]').value || '';
+                const word2 = document.querySelector('input[name="word2"]').value || '';
+                const word3 = document.querySelector('input[name="word3"]').value || '';
+
+                const suggestions = document.querySelector('textarea[name="suggestions"]').value || '';
+
+                // Build payload
+                const surveyData = {
+                    timestamp: new Date().toISOString(),
+                    group: 'Group 4',
+                    game: 'Escape from the Abandoned Hospital',
+                    demographics: {
+                        gender,
+                        age,
+                        occupation,
+                        faculty,
+                        university
+                    },
+                    evaluation: {
+                        scoreOverall: scoreOverall ? parseInt(scoreOverall) : null,
+                        scoreDifficulty: scoreDifficulty ? parseInt(scoreDifficulty) : null,
+                        scoreAlgorithm: scoreAlgorithm ? parseInt(scoreAlgorithm) : null,
+                        threeWords: [word1, word2, word3].filter(w => w !== ''),
+                        suggestions
+                    }
+                };
+
+                // Save to Firebase Realtime Database
+                const surveysRef = ref(database, 'game_surveys/group4');
+                const newSurveyRef = push(surveysRef);
+                await set(newSurveyRef, surveyData);
+
+                alert('ขอบคุณ! ส่งแบบประเมินเรียบร้อยแล้ว');
+                document.getElementById('surveyForm').reset();
+
+                // Reset UI states
+                document.getElementById('demographicsSection').style.opacity = '0.5';
+                document.getElementById('demographicsSection').style.pointerEvents = 'none';
+                document.getElementById('evaluationSection').style.opacity = '0.5';
+                document.getElementById('evaluationSection').style.pointerEvents = 'none';
+
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = true;
+                submitBtn.style.opacity = '0.5';
+                submitBtn.style.cursor = 'not-allowed';
+
+                document.getElementById('studentTeacherFields').style.display = 'none';
+                document.getElementById('otherFacultyInput').style.display = 'none';
+                document.getElementById('otherUniversityInput').style.display = 'none';
+
+            } catch (error) {
+                console.error("Error saving survey:", error);
+                alert('เกิดข้อผิดพลาดในการส่งข้อมูล กรุณาลองใหม่อีกครั้ง (' + error.message + ')');
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        }
+
+        // Real-time Results Loader
+        function loadResults() {
+            const surveysRef = ref(database, 'game_surveys/group4');
+            onValue(surveysRef, (snapshot) => {
+                const data = snapshot.val();
+                if (!data) return;
+
+                const entries = Object.values(data);
+                const total = entries.length;
+
+                // Calculate averages
+                let sumOverall = 0, countOverall = 0;
+                let sumDifficulty = 0, countDifficulty = 0;
+                let sumAlgorithm = 0, countAlgorithm = 0;
+                const allWords = [];
+                const allSuggestions = [];
+
+                entries.forEach(entry => {
+                    const ev = entry.evaluation || {};
+                    if (ev.scoreOverall != null) { sumOverall += ev.scoreOverall; countOverall++; }
+                    if (ev.scoreDifficulty != null) { sumDifficulty += ev.scoreDifficulty; countDifficulty++; }
+                    if (ev.scoreAlgorithm != null) { sumAlgorithm += ev.scoreAlgorithm; countAlgorithm++; }
+                    if (ev.threeWords && ev.threeWords.length > 0) {
+                        ev.threeWords.forEach(w => { if (w.trim()) allWords.push(w.trim()); });
+                    }
+                    if (ev.suggestions && ev.suggestions.trim()) {
+                        allSuggestions.push({ text: ev.suggestions.trim(), time: entry.timestamp });
+                    }
+                });
+
+                const avgO = countOverall > 0 ? (sumOverall / countOverall).toFixed(1) : '-';
+                const avgD = countDifficulty > 0 ? (sumDifficulty / countDifficulty).toFixed(1) : '-';
+                const avgA = countAlgorithm > 0 ? (sumAlgorithm / countAlgorithm).toFixed(1) : '-';
+
+                // Update stat cards
+                document.getElementById('totalResponses').textContent = total;
+                document.getElementById('avgOverall').textContent = avgO;
+                document.getElementById('avgDifficulty').textContent = avgD;
+                document.getElementById('avgAlgorithm').textContent = avgA;
+
+                // Update bars
+                const pctO = countOverall > 0 ? (sumOverall / countOverall) * 10 : 0;
+                const pctD = countDifficulty > 0 ? (sumDifficulty / countDifficulty) * 10 : 0;
+                const pctA = countAlgorithm > 0 ? (sumAlgorithm / countAlgorithm) * 10 : 0;
+
+                document.getElementById('barOverall').style.width = pctO + '%';
+                document.getElementById('barOverallVal').textContent = avgO + '/10';
+                document.getElementById('barDifficulty').style.width = pctD + '%';
+                document.getElementById('barDifficultyVal').textContent = avgD + '/10';
+                document.getElementById('barAlgorithm').style.width = pctA + '%';
+                document.getElementById('barAlgorithmVal').textContent = avgA + '/10';
+
+                // Word cloud
+                const wordCloud = document.getElementById('wordCloud');
+                if (allWords.length > 0) {
+                    // Count frequency
+                    const freq = {};
+                    allWords.forEach(w => { freq[w] = (freq[w] || 0) + 1; });
+                    const sorted = Object.entries(freq).sort((a, b) => b[1] - a[1]);
+                    const maxFreq = sorted[0][1];
+
+                    wordCloud.innerHTML = sorted.map(([word, count]) => {
+                        const size = 0.85 + (count / maxFreq) * 1.2;
+                        const opacity = 0.5 + (count / maxFreq) * 0.5;
+                        return `<span class="word-tag" style="font-size:${size}rem; opacity:${opacity}" title="${count} ครั้ง">${word}</span>`;
+                    }).join('');
+                } else {
+                    wordCloud.innerHTML = '<span class="word-empty">ยังไม่มีข้อมูล</span>';
+                }
+
+                // Suggestions (latest 5)
+                const suggestionsList = document.getElementById('suggestionsList');
+                if (allSuggestions.length > 0) {
+                    allSuggestions.sort((a, b) => new Date(b.time) - new Date(a.time));
+                    const latest = allSuggestions.slice(0, 5);
+                    suggestionsList.innerHTML = latest.map(s => {
+                        const d = new Date(s.time);
+                        const dateStr = d.toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' });
+                        return `<div class="suggestion-item"><p>${s.text}</p><span class="suggestion-date">${dateStr}</span></div>`;
+                    }).join('');
+                } else {
+                    suggestionsList.innerHTML = '<p class="word-empty">ยังไม่มีข้อเสนอแนะ</p>';
+                }
+            });
+        }
+
+        // Start loading results
+        loadResults();
+    </script>
+</body>
+
+</html>
