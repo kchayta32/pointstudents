@@ -1335,18 +1335,18 @@ const GAME_SURVEY_MAX_SCORE = 20;
 // Mapping: groupId → Firebase survey path
 // เพิ่มกลุ่มใหม่โดยเปิด comment เมื่อกลุ่มนั้นมี game page พร้อมแบบประเมินแล้ว
 const gameSurveyGroupMap = {
-    // "1": "group1",
+    "1": "group1",
     "2": "group2",
     // "3": "group3",
     "4": "group4",
-    // "5": "group5",
-    // "6": "group6",
+    "5": "group5",
+    "6": "group6",
     // "7": "group7",
     // "8": "group8",
     // "9": "group9",
-    // "10": "group10",
-    // "11": "group11",
-    // "12": "group12",
+    "10": "group10",
+    "11": "group11",
+    "12": "group12",
 };
 
 let gameSurveyAssignmentId = null;
