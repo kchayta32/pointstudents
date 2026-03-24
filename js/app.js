@@ -99,7 +99,7 @@ const memberData = {
 
     // กลุ่มที่ 12
     "กิจ": { studentId: "66122519003", fullName: "นายธนกฤต วรรณรังษี" },
-    "โอม": { studentId: "66122519024", fullName: "นายภานุวัฒน์ นิ่มนวล" }
+    "โอม": { studentId: "66122519037", fullName: "นายยุทธจักร หนูแก้ว" }
 };
 
 // Special cases for duplicate names (need group context)
