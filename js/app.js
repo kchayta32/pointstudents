@@ -264,9 +264,9 @@ tabBtns.forEach(btn => {
     btn.addEventListener('click', () => {
         const targetTab = btn.dataset.tab;
 
-        // Block leaderboard access for view mode
-        if (targetTab === 'leaderboard' && !isAdminMode) {
-            showNotification('ต้องเข้าสู่ระบบแอดมินเพื่อดูลีดเดอร์บอร์ด', 'error');
+        // Block leaderboard and scoretable access for view mode
+        if ((targetTab === 'leaderboard' || targetTab === 'scoretable') && !isAdminMode) {
+            showNotification('ต้องเข้าสู่ระบบแอดมินเพื่อดูหน้านี้', 'error');
             return;
         }
 
@@ -389,6 +389,7 @@ function listenToData() {
         console.log('Groups loaded:', Object.keys(groups).length);
         renderGroups();
         updateLeaderboard();
+        renderScoreTable();
     });
 
     // Listen to assignments
@@ -399,6 +400,15 @@ function listenToData() {
         renderAssignments();
         renderGroups(); // Re-render groups with updated assignments
         updateLeaderboard();
+        renderScoreTable();
+    });
+
+    // Listen to grade overrides
+    const gradesRef = ref(database, 'courses/CPE5010/grades');
+    onValue(gradesRef, (snapshot) => {
+        gradeOverrides = snapshot.val() || {};
+        console.log('Grade overrides loaded:', Object.keys(gradeOverrides).length);
+        renderScoreTable();
     });
 }
 
@@ -1458,6 +1468,164 @@ async function saveSurveyScore(groupId, score, responseCount) {
     } catch (error) {
         console.error(`Error saving survey score for group ${groupId}:`, error);
     }
+}
+
+// ============================================
+// Score Table (Admin Excel-like View)
+// ============================================
+let gradeOverrides = {};
+let isEditMode = false;
+
+function renderScoreTable() {
+    const scoreTableBody = document.getElementById('scoreTableBody');
+    if (!scoreTableBody) return;
+
+    let rows = [];
+    let index = 1;
+
+    // Sort groups by number
+    const sortedGroupIds = Object.keys(initialGroups).sort((a, b) => parseInt(a) - parseInt(b));
+
+    sortedGroupIds.forEach(groupId => {
+        const groupData = initialGroups[groupId];
+        const liveGroup = groups[groupId];
+        const groupScore = liveGroup ? calculateGroupScore(liveGroup) : 0;
+        const calculatedGrade = getGrade(groupScore);
+        const members = groupData.members;
+
+        members.forEach((nickname, memberIndex) => {
+            const info = getMemberInfo(nickname, groupId);
+            const studentId = info ? info.studentId : '-';
+            const fullName = info ? info.fullName : nickname;
+
+            // Grade: use override from Firebase if exists, otherwise use calculated
+            const overrideGrade = gradeOverrides[studentId];
+            const displayGrade = overrideGrade !== undefined ? overrideGrade : calculatedGrade;
+            const isOverride = overrideGrade !== undefined;
+            const gradeBadgeClass = getGradeBadgeClass(displayGrade);
+
+            const isFirstOfGroup = memberIndex === 0;
+            const rowClass = isFirstOfGroup ? 'group-first-row' : '';
+
+            rows.push(`
+                <tr class="${rowClass}" data-student-id="${studentId}" data-group-id="${groupId}">
+                    <td class="cell-center">${index}</td>
+                    <td class="cell-center">${groupId}</td>
+                    <td class="cell-mono">${studentId}</td>
+                    <td>${fullName}</td>
+                    <td class="cell-grade ${isEditMode ? 'cell-editable' : ''}" data-field="grade" data-student-id="${studentId}">
+                        <span class="grade-badge ${gradeBadgeClass}">${displayGrade}</span>
+                        ${isOverride ? '<span class="override-indicator" title="แก้ไขแล้ว">✎</span>' : ''}
+                    </td>
+                </tr>
+            `);
+            index++;
+        });
+    });
+
+    scoreTableBody.innerHTML = rows.join('');
+
+    // Attach double-click listeners if in edit mode
+    if (isEditMode) {
+        scoreTableBody.querySelectorAll('.cell-editable').forEach(cell => {
+            cell.addEventListener('dblclick', handleCellDoubleClick);
+        });
+    }
+}
+
+function handleCellDoubleClick(e) {
+    const cell = e.currentTarget;
+    if (cell.querySelector('input')) return; // Already editing
+
+    const studentId = cell.dataset.studentId;
+    const currentGrade = cell.querySelector('.grade-badge')?.textContent || '';
+
+    // Replace cell content with input
+    cell.innerHTML = '';
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'cell-input';
+    input.value = currentGrade;
+    input.setAttribute('list', 'gradeOptions');
+    cell.appendChild(input);
+
+    // Add datalist for grade suggestions if not exist
+    if (!document.getElementById('gradeOptions')) {
+        const datalist = document.createElement('datalist');
+        datalist.id = 'gradeOptions';
+        ['A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'D+', 'D', 'F'].forEach(g => {
+            const opt = document.createElement('option');
+            opt.value = g;
+            datalist.appendChild(opt);
+        });
+        document.body.appendChild(datalist);
+    }
+
+    input.focus();
+    input.select();
+
+    // Save on Enter or blur
+    const saveValue = async () => {
+        const newGrade = input.value.trim().toUpperCase();
+        const validGrades = ['A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'D+', 'D', 'F'];
+
+        if (newGrade && validGrades.includes(newGrade)) {
+            try {
+                const gradeRef = ref(database, `courses/CPE5010/grades/${studentId}`);
+                await set(gradeRef, newGrade);
+                showNotification(`บันทึกเกรด ${newGrade} สำหรับ ${studentId} สำเร็จ`, 'success');
+            } catch (error) {
+                console.error('Error saving grade:', error);
+                showNotification('เกิดข้อผิดพลาดในการบันทึกเกรด', 'error');
+            }
+        } else if (newGrade === '') {
+            // Remove override - revert to calculated grade
+            try {
+                const gradeRef = ref(database, `courses/CPE5010/grades/${studentId}`);
+                await remove(gradeRef);
+                showNotification(`ลบเกรดที่แก้ไขแล้ว กลับไปใช้เกรดที่คำนวณ`, 'success');
+            } catch (error) {
+                console.error('Error removing grade:', error);
+            }
+        } else {
+            showNotification('เกรดไม่ถูกต้อง กรุณาใส่ A, A-, B+, B, B-, C+, C, D+, D หรือ F', 'error');
+        }
+        // Table will re-render from Firebase listener
+    };
+
+    let saved = false;
+    input.addEventListener('keydown', (ev) => {
+        if (ev.key === 'Enter') {
+            saved = true;
+            saveValue();
+        } else if (ev.key === 'Escape') {
+            saved = true;
+            renderScoreTable(); // Discard changes
+        }
+    });
+
+    input.addEventListener('blur', () => {
+        if (!saved) {
+            saved = true;
+            saveValue();
+        }
+    });
+}
+
+// Edit mode toggle
+const toggleEditModeBtn = document.getElementById('toggleEditMode');
+if (toggleEditModeBtn) {
+    toggleEditModeBtn.addEventListener('click', () => {
+        isEditMode = !isEditMode;
+        toggleEditModeBtn.querySelector('.edit-icon').textContent = isEditMode ? '✅' : '✏️';
+        toggleEditModeBtn.querySelector('.edit-text').textContent = isEditMode ? 'เสร็จสิ้น' : 'แก้ไข';
+        toggleEditModeBtn.classList.toggle('active', isEditMode);
+        renderScoreTable();
+
+        if (isEditMode) {
+            showNotification('เปิดโหมดแก้ไข - ดับเบิ้ลคลิกที่เซลล์เกรดเพื่อแก้ไข', 'info');
+        }
+    });
 }
 
 // ============================================

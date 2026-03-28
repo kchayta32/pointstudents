@@ -105,6 +105,10 @@
                 <span class="tab-icon">🏆</span>
                 <span class="tab-text">ลีดเดอร์บอร์ด</span>
             </button>
+            <button class="tab-btn" data-tab="scoretable">
+                <span class="tab-icon">📊</span>
+                <span class="tab-text">ตารางคะแนน</span>
+            </button>
         </div>
 
         <!-- Tab Content: Assignment Management -->
@@ -200,6 +204,35 @@
                             </tr>
                         </thead>
                         <tbody id="rankingTableBody">
+                            <!-- Dynamic content -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <!-- Tab Content: Score Table (Admin-only) -->
+        <div class="tab-content" id="tab-scoretable">
+            <section class="dashboard-section">
+                <div class="section-header">
+                    <h2><span class="icon">📊</span> ตารางคะแนนรายชื่อ</h2>
+                    <button class="btn-edit-mode admin-only" id="toggleEditMode">
+                        <span class="edit-icon">✏️</span>
+                        <span class="edit-text">แก้ไข</span>
+                    </button>
+                </div>
+                <div class="score-table-container">
+                    <table class="score-table" id="scoreTable">
+                        <thead>
+                            <tr>
+                                <th>ลำดับที่</th>
+                                <th>กลุ่ม</th>
+                                <th>รหัสนศ.</th>
+                                <th>ชื่อ-สกุล</th>
+                                <th>เกรดที่ได้</th>
+                            </tr>
+                        </thead>
+                        <tbody id="scoreTableBody">
                             <!-- Dynamic content -->
                         </tbody>
                     </table>
