@@ -1341,7 +1341,7 @@ const gameSurveyGroupMap = {
     "6": "group6",
     "7": "group7",
     "8": "group8",
-    // "9": "group9",
+    "9": "group9",
     "10": "group10",
     "11": "group11",
     "12": "group12",
